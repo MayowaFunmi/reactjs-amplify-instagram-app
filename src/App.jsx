@@ -5,7 +5,7 @@ import Home from './components/Home';
 import SignUp from './components/SignUp';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { SignIn } from '@aws-amplify/ui-react/dist/types/components/Authenticator/SignIn';
+import SignIn from './components/SignIn';
 
 const App = () => {
   return (

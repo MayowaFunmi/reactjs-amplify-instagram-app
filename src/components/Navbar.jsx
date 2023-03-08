@@ -29,11 +29,16 @@ const Navbar = () => {
       <Link to="/">
         <li>Create Post</li>
       </Link>
-      <Link to="/">
+
+      {Auth.currentAuthenticatedUser() ? (
         <button className="primaryBtn" onClick={() => logoutUser()}>
           Logout
         </button>
-      </Link>
+      ) : (
+        <Link to="/signin">
+          <li>Login</li>
+        </Link>
+      )}
     </>
   );
 };
