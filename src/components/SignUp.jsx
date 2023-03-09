@@ -4,17 +4,17 @@ import { Link, useNavigate } from 'react-router-dom';
 import logo from '../images/logo.jpeg';
 import './SignUp.css';
 import { toast } from 'react-toastify';
+//import Confirmation from './Confirmation';
 
 const SignUp = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const navigate = useNavigate();
   const notifyError = (msg) => toast.error(msg);
   const notifySuccess = (msg) => toast.success(msg);
   const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
-
+  const navigate = useNavigate();
   async function handleSignUp(e) {
     //e.preventDefault();
     if (password !== confirmPassword) {
@@ -33,13 +33,17 @@ const SignUp = () => {
           email,
         },
       });
-      console.log('user = ', user);
-      notifySuccess('Sign up successful!!!');
+      console.log('user signup = ', user);
+      //notifySuccess('Sign up successful!!!');
       if (user) {
-        navigate('/signin');
+        const data = { username: user.username, user: user };
+        notifySuccess('Checking for confirmation');
+        navigate('/confirmation', { state: data });
+        //return <Confirmation username={username} user={user} />;
       }
     } catch (error) {
-      console.log(error);
+      notifyError(error);
+      console.log('error = ', error);
     }
   }
 
