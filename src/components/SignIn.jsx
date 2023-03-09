@@ -24,6 +24,11 @@ const SignIn = () => {
     try {
       const signInResponse = await Auth.signIn(username, password);
       console.log('SignInResponse = ', signInResponse);
+      console.log(
+        localStorage.getItem(
+          'CognitoIdentityServiceProvider.654h1i3qugginrjga5hrr94fqd.username2.accessToken'
+        )
+      );
       notifySuccess('Login Successful!!!');
       navigate('/');
     } catch (error) {
