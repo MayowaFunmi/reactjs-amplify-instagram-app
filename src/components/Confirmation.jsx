@@ -11,8 +11,9 @@ const Confirmation = () => {
   const location = useLocation();
   const notifySuccess = (msg) => toast.success(msg);
   const notifyError = (msg) => toast.error(msg);
-  console.log(location.state);
+  console.log(location);
   const { username, user } = location.state || {};
+
   async function confirmUser(username, confirmationCode) {
     try {
       await Auth.confirmSignUp(username, confirmationCode);
@@ -39,7 +40,7 @@ const Confirmation = () => {
               name="code"
               placeholder="Enter confirmation code"
               value={confirmationCode}
-              onChange={(e) => {
+              onInput={(e) => {
                 setConfirmationCode(e.target.value);
               }}
             />
