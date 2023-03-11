@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import logo from '../images/logo.jpeg';
 import './SignUp.css';
 import { toast } from 'react-toastify';
-import { createUser } from '../graphql/mutations';
+import { createAuthUser, createUser } from '../graphql/mutations';
 //import Confirmation from './Confirmation';
 
 const SignUp = () => {
@@ -23,9 +23,47 @@ const SignUp = () => {
   async function confirmUser(username, confirmationCode) {
     try {
       await Auth.confirmSignUp(username, confirmationCode);
+      console.log('signup confirmed');
+      // sign in user
+      await Auth.signIn(username, password);
+      console.log('signin confirmed');
 
-      notifySuccess('Sign up completed succesfully!!!');
-      navigate('/signin');
+      // set local storage tokens
+      const userSession = await Auth.currentSession();
+      localStorage.setItem('accessToken', userSession.accessToken.jwtToken);
+      localStorage.setItem('refreshToken', userSession.refreshToken.token);
+      // get user attributes
+      const authenticated_user = await Auth.currentAuthenticatedUser(); // username, other attributes - email, sub
+      console.log('sub = ', authenticated_user.attributes.sub);
+      const authUser = {
+        id: authenticated_user.attributes.sub,
+        username,
+        email,
+      };
+
+      const user = {
+        id: authenticated_user.attributes.sub,
+        username,
+        email,
+        authUser: authenticated_user.attributes.sub,
+      };
+      // create auth user
+      const newAuthUser = await API.graphql(
+        graphqlOperation(createAuthUser, { input: authUser })
+      );
+      console.log('created auth user');
+      const newUser = await API.graphql(
+        graphqlOperation(createUser, { input: user })
+      );
+      console.log('all created');
+      console.log('auth user = ', newAuthUser);
+      console.log('new user = ', newUser);
+
+      notifySuccess(
+        'Sign up completed succesfully. You are signed in automatically'
+      );
+
+      navigate('/');
     } catch (error) {
       notifyError(error);
       //console.log('Error confirming user: ', error);
@@ -48,7 +86,6 @@ const SignUp = () => {
         password,
         attributes: {
           email,
-          'custom:privacy': 'public',
         },
       });
       console.log('user signup = ', user);
