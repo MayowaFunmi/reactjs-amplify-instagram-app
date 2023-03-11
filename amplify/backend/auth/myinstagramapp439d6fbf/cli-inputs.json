@@ -14,11 +14,13 @@
     ],
     "smsAuthenticationMessage": "Your authentication code is {####}",
     "smsVerificationMessage": "Your verification code is {####}",
-    "emailVerificationSubject": "Your verification code",
+    "emailVerificationSubject": "account verification",
     "emailVerificationMessage": "Your verification code is {####}",
-    "defaultPasswordPolicy": false,
+    "defaultPasswordPolicy": true,
     "passwordPolicyMinLength": 8,
-    "passwordPolicyCharacters": [],
+    "passwordPolicyCharacters": [
+      "Requires Lowercase"
+    ],
     "requiredAttributes": [
       "email"
     ],
@@ -29,17 +31,52 @@
       "email"
     ],
     "userpoolClientReadAttributes": [
-      "email"
+      "address",
+      "birthdate",
+      "gender",
+      "locale",
+      "name",
+      "phone_number",
+      "picture",
+      "profile",
+      "updated_at"
     ],
     "userpoolClientLambdaRole": "myinst439d6fbf_userpoolclient_lambda_role",
-    "userpoolClientSetAttributes": false,
+    "userpoolClientSetAttributes": true,
     "sharedId": "439d6fbf",
     "resourceName": "myinstagramapp439d6fbf",
     "authSelections": "identityPoolAndUserPool",
-    "useDefault": "default",
-    "userPoolGroupList": [],
+    "useDefault": "manual",
+    "userPoolGroupList": [
+      "group1"
+    ],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
-    "useEnabledMfas": true
+    "useEnabledMfas": true,
+    "authRoleArn": {
+      "Fn::GetAtt": [
+        "AuthRole",
+        "Arn"
+      ]
+    },
+    "unauthRoleArn": {
+      "Fn::GetAtt": [
+        "UnauthRole",
+        "Arn"
+      ]
+    },
+    "breakCircularDependency": true,
+    "dependsOn": [],
+    "thirdPartyAuth": false,
+    "userPoolGroups": true,
+    "adminQueries": true,
+    "triggers": {},
+    "hostedUI": false,
+    "adminQueryGroup": "group1",
+    "authProviders": [],
+    "parentStack": {
+      "Ref": "AWS::StackId"
+    },
+    "permissions": []
   }
 }

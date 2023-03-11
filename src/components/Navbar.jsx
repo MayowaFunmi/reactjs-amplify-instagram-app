@@ -13,6 +13,9 @@ const Navbar = () => {
   const logoutUser = async () => {
     try {
       await Auth.signOut();
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+
       notifySuccess('You are logged out!!!');
       navigate('/signin');
     } catch (error) {
@@ -21,10 +24,10 @@ const Navbar = () => {
     }
   };
   const loginStatus = () => {
-    const token = localStorage.getItem(
-      'CognitoIdentityServiceProvider.654h1i3qugginrjga5hrr94fqd.username2.accessToken'
-    );
-    if (token) {
+    const accessToken = localStorage.getItem('accessToken');
+    const refreshToken = localStorage.getItem('refreshToken');
+
+    if (accessToken || refreshToken) {
       return [
         <>
           <Link to="/">
@@ -35,6 +38,9 @@ const Navbar = () => {
           </Link>
           <Link to="/">
             <li>Create Post</li>
+          </Link>
+          <Link to="/">
+            <li>Change Password</li>
           </Link>
           <Link to="/">
             <button className="primaryBtn" onClick={() => logoutUser()}>

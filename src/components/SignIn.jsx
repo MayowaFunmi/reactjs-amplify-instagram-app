@@ -24,16 +24,13 @@ const SignIn = () => {
     try {
       const signInResponse = await Auth.signIn(username, password);
       console.log('SignInResponse = ', signInResponse);
-      console.log(
-        localStorage.getItem(
-          'CognitoIdentityServiceProvider.654h1i3qugginrjga5hrr94fqd.username2.accessToken'
-        )
-      );
+      const userSession = await Auth.currentSession();
+      localStorage.setItem('accessToken', userSession.accessToken.jwtToken);
+      localStorage.setItem('refreshToken', userSession.refreshToken.token);
       notifySuccess('Login Successful!!!');
       navigate('/');
     } catch (error) {
-      console.log('error: ', error);
-      notifyError('Failed to Loin!!!');
+      notifyError(error);
     }
   };
 

@@ -13,10 +13,18 @@
     },
     "categories": {
       "auth": {
-        "myinstagramapp439d6fbf": {}
+        "myinstagramapp439d6fbf": {},
+        "userPoolGroups": {}
       },
       "api": {
-        "myinstagramapp": {}
+        "myinstagramapp": {},
+        "AdminQueries": {}
+      },
+      "function": {
+        "AdminQueries43b3a388": {
+          "deploymentBucketName": "amplify-myinstagramapp-dev-52437-deployment",
+          "s3Key": "amplify-builds/AdminQueries43b3a388-744e39536769614c6d79-build.zip"
+        }
       }
     }
   }

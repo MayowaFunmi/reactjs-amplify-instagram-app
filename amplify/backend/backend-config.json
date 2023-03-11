@@ -1,5 +1,27 @@
 {
   "api": {
+    "AdminQueries": {
+      "authorizationType": "AMAZON_COGNITO_USER_POOLS",
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "myinstagramapp439d6fbf"
+        },
+        {
+          "attributes": [
+            "Arn",
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "AdminQueries43b3a388"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    },
     "myinstagramapp": {
       "dependsOn": [],
       "output": {
@@ -27,7 +49,9 @@
           "SMS"
         ],
         "passwordProtectionSettings": {
-          "passwordPolicyCharacters": [],
+          "passwordPolicyCharacters": [
+            "REQUIRES_LOWERCASE"
+          ],
           "passwordPolicyMinLength": 8
         },
         "signupAttributes": [
@@ -41,6 +65,56 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "Cognito"
+    },
+    "userPoolGroups": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId",
+            "AppClientIDWeb",
+            "AppClientID",
+            "IdentityPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "myinstagramapp439d6fbf"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito-UserPool-Groups"
+    }
+  },
+  "function": {
+    "AdminQueries43b3a388": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "myinstagramapp439d6fbf"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_AdminQueries43b3a388_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "AdminQueries43b3a388"
+        }
+      ]
+    },
+    "AMPLIFY_function_AdminQueries43b3a388_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "AdminQueries43b3a388"
+        }
+      ]
     }
   }
 }

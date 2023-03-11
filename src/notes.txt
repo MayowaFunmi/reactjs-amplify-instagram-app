@@ -1,0 +1,51 @@
+=============GET CURRENT USER INFO=======================================
+import { Auth } from 'aws-amplify';
+
+const getCurrentAuthUser = async () => {
+  const userInfo = await Auth.currentUserInfo();
+  return {
+    id: userInfo.id,
+    username: userInfo.username,
+    email: userInfo.attributes.email,
+  };
+};
+
+===========CREATE AUTHUSER AND API USER TOGETHER======================================
+import { Auth } from 'aws-amplify';
+
+const createUser = async ({ username, email, password }) => {
+  const { user } = await Auth.signUp({
+    username,
+    password,
+    attributes: {
+      email,
+    },
+  });
+  
+  const authUser = {
+    id: userSub,
+    username,
+    email,
+  };
+  
+  const result = await API.graphql({
+    query: mutations.createUser,
+    variables: {
+      input: {
+        username,
+        email,
+        authUser,
+      },
+    },
+  });
+  
+  return result.data.createUser;
+};
+
+===========GET USER ATTRIBUTES======================================
+import { Auth } from 'aws-amplify';
+
+const getUserSub = async () => {
+  const user = await Auth.currentAuthenticatedUser();
+  return user.attributes.sub;
+};

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Auth } from 'aws-amplify';
+import { API, Auth, graphqlOperation } from 'aws-amplify';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../images/logo.jpeg';
 import './SignUp.css';
 import { toast } from 'react-toastify';
+import { createUser } from '../graphql/mutations';
 //import Confirmation from './Confirmation';
 
 const SignUp = () => {
@@ -22,7 +23,7 @@ const SignUp = () => {
   async function confirmUser(username, confirmationCode) {
     try {
       await Auth.confirmSignUp(username, confirmationCode);
-      //console.log('User confirmed = ', user);
+
       notifySuccess('Sign up completed succesfully!!!');
       navigate('/signin');
     } catch (error) {
@@ -47,10 +48,11 @@ const SignUp = () => {
         password,
         attributes: {
           email,
+          'custom:privacy': 'public',
         },
       });
       console.log('user signup = ', user);
-      //notifySuccess('Sign up successful!!!');
+
       if (user) {
         setConfirmForm(true);
         notifySuccess(
