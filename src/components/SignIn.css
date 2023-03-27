@@ -1,0 +1,41 @@
+.signIn {
+    background-image: url('../images/background.jpeg');
+    background-size: cover;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.signUpLogo {
+    width: 250px;
+    object-fit: contain;
+    padding: 10px 0px;
+}
+
+.loginForm {
+    background-color: #ffffff4d;
+    padding: 30px;
+    border: 1px solid rgb(129, 121, 121);
+    border-radius: 1px;
+}
+
+.loginForm2 {
+    background-color: #fff;
+    padding: 30px;
+    margin-top: 5px;
+    border: 1px solid rgb(129, 121, 121);
+    border-radius: 1px;
+}
+
+#login-btn {
+    background-color: #1773ea;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    padding: 5px 10px;
+    width: 100%;
+    cursor: pointer;
+    margin-top: 8px;
+}

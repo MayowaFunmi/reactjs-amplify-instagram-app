@@ -1,0 +1,185 @@
+import React, { useEffect, useState } from 'react';
+import './SignUp.css';
+import logo from '../images/logo.jpeg';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import { API, Auth, graphqlOperation } from 'aws-amplify';
+import { createUser } from '../graphql/mutations';
+import { listUsers } from '../graphql/queries';
+import UserProfile from './UsesrProfile';
+
+const Profile = () => {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState(false);
+  const [bio, setBio] = useState('');
+  //const [photo, setPhoto] = useState(0);
+  const [location, setLocation] = useState('');
+  const [privacy, setPrivacy] = useState('');
+  const [userSub, setUserSub] = useState('');
+  //const [id, setId] = useState('');
+  const [username, setUsername] = useState('');
+  const [profile, setProfile] = useState({});
+
+  const notifyError = (msg) => toast.error(msg);
+  const notifySuccess = (msg) => toast.success(msg);
+  const navigate = useNavigate();
+  const accessToken = localStorage.getItem('accessToken');
+  const refreshToken = localStorage.getItem('refreshToken');
+
+  useEffect(() => {
+    const checkUser = async () => {
+      const authenticated_user = await Auth.currentAuthenticatedUser(); // username, other attributes - email, sub
+      if (authenticated_user) {
+        setUserSub(authenticated_user.attributes.sub);
+        //setId(authenticated_user.id);
+        setUsername(authenticated_user.username);
+      }
+      try {
+        const users = await API.graphql(graphqlOperation(listUsers));
+        console.log('users found = ', users.data.listUsers.items);
+        const usersArr = users.data.listUsers.items;
+        for (let i = 0; i < usersArr.length; i++) {
+          if (usersArr[i].userId === userSub) {
+            setProfile(usersArr[i]);
+            setStatus(true);
+            break;
+          } else {
+            console.log('not present');
+          }
+        }
+      } catch (error) {
+        notifyError(error);
+        console.log('user not found = ', error);
+      }
+    };
+    checkUser();
+  }, [userSub]);
+  const handleProfile = async () => {
+    if (accessToken || refreshToken) {
+      const userProfile = {
+        input: {
+          userId: userSub,
+          username: username,
+          firstName: firstName,
+          lastName: lastName,
+          bio: bio,
+          email: email,
+          location: location,
+          privacy: privacy,
+        },
+      };
+      console.log(userProfile);
+      try {
+        const newUser = await API.graphql({
+          query: createUser,
+          variables: userProfile,
+        });
+        //console.log('auth user = ', newAuthUser);
+        console.log('new user = ', newUser);
+        notifySuccess('User Created Successfully!!');
+        navigate('/');
+      } catch (error) {
+        console.log('error = ', error);
+        notifyError(error);
+      }
+    } else {
+      notifyError('User is not authenticated');
+      navigate('/signin');
+    }
+  };
+
+  return (
+    <div className="signUp">
+      <div className="form-container">
+        {!status ? (
+          <div className="form">
+            <img className="signUpLogo" src={logo} alt="" />
+            <p className="loginPara">Create Your Profile</p>
+            <div>
+              <input
+                type="text"
+                name="firstName"
+                placeholder="First Name"
+                value={firstName}
+                onChange={(e) => {
+                  setFirstName(e.target.value);
+                }}
+              />
+            </div>
+
+            <div>
+              <input
+                type="text"
+                name="lastName"
+                placeholder="Last Name"
+                value={lastName}
+                onChange={(e) => {
+                  setLastName(e.target.value);
+                }}
+              />
+            </div>
+            <div>
+              <input
+                type="text"
+                name="bio"
+                placeholder="Bio"
+                value={bio}
+                onChange={(e) => {
+                  setBio(e.target.value);
+                }}
+              />
+            </div>
+            <div>
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
+              />
+            </div>
+
+            <div>
+              <input
+                type="text"
+                name="location"
+                placeholder="Your Address"
+                value={location}
+                onChange={(e) => {
+                  setLocation(e.target.value);
+                }}
+              />
+            </div>
+
+            <div>
+              <input
+                type="text"
+                name="privacy"
+                placeholder="Set your privacy: private or public"
+                value={privacy}
+                onChange={(e) => {
+                  setPrivacy(e.target.value);
+                }}
+              />
+            </div>
+
+            <input
+              type="submit"
+              id="submit-btn"
+              value="submit Profile"
+              onClick={() => handleProfile()}
+            />
+          </div>
+        ) : (
+          <UserProfile profile={profile} />
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default Profile;

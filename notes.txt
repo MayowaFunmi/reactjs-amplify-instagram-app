@@ -1,0 +1,115 @@
+=============GET CURRENT USER INFO=======================================
+import { Auth } from 'aws-amplify';
+
+const getCurrentAuthUser = async () => {
+  const userInfo = await Auth.currentUserInfo();
+  return {
+    id: userInfo.id,
+    username: userInfo.username,
+    email: userInfo.attributes.email,
+  };
+};
+
+===========CREATE AUTHUSER AND API USER TOGETHER======================================
+import { Auth } from 'aws-amplify';
+
+const createUser = async ({ username, email, password }) => {
+  const { user } = await Auth.signUp({
+    username,
+    password,
+    attributes: {
+      email,
+    },
+  });
+  
+  const authUser = {
+    id: userSub,
+    username,
+    email,
+  };
+  
+  const result = await API.graphql({
+    query: mutations.createUser,
+    variables: {
+      input: {
+        username,
+        email,
+        authUser,
+      },
+    },
+  });
+  
+  return result.data.createUser;
+};
+
+===========GET USER ATTRIBUTES======================================
+import { Auth } from 'aws-amplify';
+
+const getUserSub = async () => {
+  const user = await Auth.currentAuthenticatedUser();
+  return user.attributes.sub;
+};
+
+================api schema ==============================
+@auth(
+    rules: [{ allow: private, operations: [create, update, delete, read] }]
+  )
+type User
+  @model
+  @auth(rules: [{ allow: private, operations: [read] }, { allow: owner }]) {
+  userId: ID
+  username: String!
+  firstName: String!
+  lastName: String!
+  bio: String
+  location: String
+  email: String!
+  followers: [User] @hasMany
+  followings: [User] @hasMany
+  photo: String
+  dateOfBirth: String
+  privacy: String
+  posts: [Post] @hasMany
+  comments: [Comment] @hasMany
+}
+
+type Post
+  @model
+  @auth(rules: [{ allow: private, operations: [read] }, { allow: owner }]) {
+  id: ID!
+  body: String!
+  photo: String!
+  likes: [User] @hasMany
+  comments: [Comment] @hasMany
+  tags: [Tag] @manyToMany(relationName: "PostTags")
+  author: User! @belongsTo
+}
+
+type Comment
+  @model
+  @auth(rules: [{ allow: private, operations: [read] }, { allow: owner }]) {
+  id: ID!
+  text: String!
+  author: User! @belongsTo
+  post: Post! @belongsTo
+}
+
+type Tag
+  @model
+  @auth(rules: [{ allow: private, operations: [read] }, { allow: owner }]) {
+  id: ID!
+  label: String!
+  posts: [Post] @manyToMany(relationName: "PostTags")
+}
+++++================================================================
+const getData = async () => {
+    const user = await Auth.currentAuthenticatedUser(); // username, other attributes - email, sub
+    const {attributes} = user;
+    const userInfo = await Auth.currentUserInfo(); // attributes - email, sub, id, username
+    const userSession = await Auth.currentSession();
+    console.log('user = ', user);
+    console.log('attributes = ', attributes);
+
+    console.log('userInfo = ', userInfo);
+    console.log('userSession = ', userSession);
+  };
