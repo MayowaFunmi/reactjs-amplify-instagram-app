@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { API, Auth, graphqlOperation } from 'aws-amplify';
 import LoginContext from '../context/LoginContext';
 import { useNavigate } from 'react-router-dom';
-import { getComment, listPosts } from '../graphql/queries';
+import { getComment, getPost, listPosts } from '../graphql/queries';
 import { listComments } from '../graphql/queries';
 import { createComment } from '../graphql/mutations';
 import { updatePost } from '../graphql/mutations';
@@ -89,36 +89,23 @@ const Home = ({ sub }) => {
       console.log('error updating post: ', error);
     }
   };
-  const updatedPosts = async (post, postId, newComment) => {
-    console.log(newComment);
-    console.log(post);
 
-    //const data = { ...post, comments: [...post.comments, newComment] };
-    const com = await API.graphql(
-      graphqlOperation(getComment, { id: newComment.data.createComment.id })
-    );
-    const data = { id: postId, comments: newComment.data.createComment };
-    console.log('data= ', data);
-    try {
-      const pts = await API.graphql(updatePost, {
-        input: data,
-      });
-      console.log('post updated: ', pts);
-    } catch (error) {
-      console.log('error updating post: ', error);
-    }
-  };
   // save new comments
   const makeComment = async (post, text, id) => {
     const commentParams = {
-      input: { text: text, postCommentsId: id, userCommentsId: sub },
+      input: { text: text, postID: id, userID: sub },
     };
     try {
-      const newComment = await API.graphql(
-        graphqlOperation(createComment, commentParams)
-      );
+      await API.graphql(graphqlOperation(createComment, commentParams));
       notifySuccess('Comment posted successfully');
-      await updatedPost(post, id, newComment);
+      //await updatedPost(post, id, newComment);
+      const result = await API.graphql(graphqlOperation(getPost, { id: id }));
+      const postWithComments = result.data.getPost;
+      console.log('post with comments = ', postWithComments);
+
+      const postComments = postWithComments.comments.items; // access comments from post
+      console.log('post comments = ', postComments);
+
       navigate('/');
     } catch (error) {
       console.log('error = ', error);

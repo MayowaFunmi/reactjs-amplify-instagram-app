@@ -3,7 +3,7 @@ import './SignUp.css';
 import logo from '../images/logo.jpeg';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import { API } from 'aws-amplify';
+import { API, Auth } from 'aws-amplify';
 import { createUser } from '../graphql/mutations';
 import UserProfile from './UsesrProfile';
 import LoginContext from '../context/LoginContext';
@@ -30,11 +30,13 @@ const Profile = ({ userData, sub }) => {
   }, []);
 
   const handleProfile = async () => {
-    if (auth.status) {
+    if (auth.status === false) {
+      const authenticated_user = await Auth.currentAuthenticatedUser(); // username, other attributes - email, sub
+
       const userProfile = {
         input: {
           userId: sub,
-          username: userData.username,
+          username: authenticated_user.username,
           firstName: firstName,
           lastName: lastName,
           bio: bio,

@@ -30,8 +30,8 @@ const App = () => {
       }
       try {
         const users = await API.graphql(graphqlOperation(listUsers));
-        console.log('users found = ', users.data.listUsers.items);
         const usersArr = users.data.listUsers.items;
+        console.log('users found = ', users.data.listUsers.items);
         for (let i = 0; i < usersArr.length; i++) {
           if (usersArr[i].userId === userSub) {
             setUserData(usersArr[i]);
