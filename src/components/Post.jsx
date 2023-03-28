@@ -9,13 +9,29 @@ import './Home.css';
 
 const Post = ({ post, sub }) => {
   const [comment, setComment] = useState('');
+  const [postId, setPostId] = useState({});
   const [postComment, setPostComment] = useState([]);
   const notifyError = (msg) => toast.error(msg);
   const notifySuccess = (msg) => toast.success(msg);
   const navigate = useNavigate();
 
-  const getComments = (post) => {};
-  useEffect(() => {});
+  useEffect(() => {
+    setPostId(post.id);
+  }, [post.id]);
+
+  useEffect(() => {
+    const getComments = async (id) => {
+      console.log('postId = ', postId);
+      const result = await API.graphql(graphqlOperation(getPost, { id: id }));
+      const postWithComments = result.data.getPost;
+      //console.log('post with comments = ', postWithComments);
+      const postComments = postWithComments.comments.items; // access comments from post
+      setPostComment(postComments);
+      //console.log('post comments = ', postComment);
+    };
+    getComments(postId);
+  }, [postComment, postId]);
+
   const toggleComment = (posts) => {
     console.log(posts);
   };
@@ -28,13 +44,6 @@ const Post = ({ post, sub }) => {
     try {
       await API.graphql(graphqlOperation(createComment, commentParams));
       notifySuccess('Comment posted successfully');
-      const result = await API.graphql(graphqlOperation(getPost, { id: id }));
-      const postWithComments = result.data.getPost;
-      console.log('post with comments = ', postWithComments);
-
-      const postComments = postWithComments.comments.items; // access comments from post
-      setPostComment(postComments);
-      console.log('post comments = ', postComment);
       navigate('/');
     } catch (error) {
       console.log('error = ', error);
