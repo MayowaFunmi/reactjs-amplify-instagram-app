@@ -6,10 +6,10 @@ import { getComment, getPost, listPosts } from '../graphql/queries';
 import { listComments } from '../graphql/queries';
 import { createComment } from '../graphql/mutations';
 import { updatePost } from '../graphql/mutations';
-
 import './Home.css';
 import user1 from '../images/user1.jpg';
 import { toast } from 'react-toastify';
+import Post from './Post';
 
 const Home = ({ sub }) => {
   const accessToken = localStorage.getItem('accessToken');
@@ -65,159 +65,12 @@ const Home = ({ sub }) => {
     console.log(id);
   };
 
-  // function to make comments
-  // update new comment in post model
-
-  const updatedPost = async (post, postId, newComment) => {
-    console.log(newComment);
-    console.log(post);
-
-    try {
-      const updatedPostData = {
-        id: postId,
-        // comments: [
-        //   ...post.comments.items,
-        //   { id: newComment.data.createComment.id },
-        // ],
-        comments: { id: newComment.data.createComment.id },
-      };
-      const updatedPostResponse = await API.graphql(
-        graphqlOperation(updatePost, { input: updatedPostData })
-      );
-      console.log('post updated: ', updatedPostResponse);
-    } catch (error) {
-      console.log('error updating post: ', error);
-    }
-  };
-
-  // save new comments
-  const makeComment = async (post, text, id) => {
-    const commentParams = {
-      input: { text: text, postID: id, userID: sub },
-    };
-    try {
-      await API.graphql(graphqlOperation(createComment, commentParams));
-      notifySuccess('Comment posted successfully');
-      //await updatedPost(post, id, newComment);
-      const result = await API.graphql(graphqlOperation(getPost, { id: id }));
-      const postWithComments = result.data.getPost;
-      console.log('post with comments = ', postWithComments);
-
-      const postComments = postWithComments.comments.items; // access comments from post
-      console.log('post comments = ', postComments);
-
-      navigate('/');
-    } catch (error) {
-      console.log('error = ', error);
-      notifyError(error);
-    }
-  };
   console.log('posts = ', posts);
   return (
     <div className="home">
       {/* card */}
       {posts.map((post) => {
-        return (
-          <div className="card" key={post.id}>
-            {/* card header */}
-            <div className="card-header">
-              <div className="card-pic">
-                <img src={user1} alt="" />
-              </div>
-              <h5>{post.username}</h5>
-            </div>
-            {/* card image */}
-            <div className="card-image">
-              <img src={post.photo} alt="" />
-            </div>
-            <p>{post.body}</p>
-            <p>{post.comments.items}</p>
-
-            {/* card content */}
-            {/* <div className="card-content">
-              {post.likes.includes(
-                JSON.parse(localStorage.getItem('user'))._id
-              ) ? (
-                <span
-                  className="material-symbols-outlined red"
-                  onClick={() => {
-                    unLikePost(post._id);
-                  }}
-                >
-                  favorite
-                </span>
-              ) : (
-                <span
-                  className="material-symbols-outlined"
-                  onClick={() => {
-                    likePost(post._id);
-                  }}
-                >
-                  favorite
-                </span>
-              )}
-
-              {post.likes.length === 0 ? (
-                <p>{post.likes.length} Likes</p>
-              ) : post.likes.length === 1 ? (
-                <p
-                  style={{ cursor: 'pointer', color: 'blue' }}
-                  onClick={() => viewLikes(post)}
-                >
-                  {post.likes.length} Like
-                </p>
-              ) : (
-                <p
-                  style={{ cursor: 'pointer', color: 'blue' }}
-                  onClick={() => viewLikes(post)}
-                >
-                  {post.likes.length} Likes
-                </p>
-              )}
-
-              <p>{post.body}</p>
-              {post.comments.length === 1 ? (
-                <p
-                  style={{ cursor: 'pointer', fontWeight: 'bold' }}
-                  onClick={() => toggleComment(post)}
-                >
-                  View {post.comments.length} comment
-                </p>
-              ) : post.comments.length === 0 ? (
-                <p
-                  style={{ cursor: 'pointer', fontWeight: 'bold' }}
-                  onClick={() => toggleComment(post)}
-                >
-                  Be the first to comment
-                </p>
-              ) : (
-                <p
-                  style={{ cursor: 'pointer', fontWeight: 'bold' }}
-                  onClick={() => toggleComment(post)}
-                >
-                  View all {post.comments.length} comments
-                </p>
-              )}
-            </div> */}
-
-            {/* comment */}
-            <div className="add-comment">
-              <span className="material-symbols-outlined">mood</span>
-              <input
-                type="text"
-                placeholder="Add a comment"
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-              />
-              <button
-                className="comment"
-                onClick={() => makeComment(post, comment, post.id)}
-              >
-                Reply
-              </button>
-            </div>
-          </div>
-        );
+        return <Post post={post} sub={sub} />;
       })}
 
       {/* show comments */}
@@ -279,10 +132,10 @@ const Home = ({ sub }) => {
                 />
                 <button
                   className="comment"
-                  onClick={() => {
-                    makeComment(comment, item._id);
-                    toggleComment();
-                  }}
+                  // onClick={() => {
+                  //   makeComment(comment, item._id);
+                  //   toggleComment();
+                  // }}
                 >
                   Post
                 </button>
