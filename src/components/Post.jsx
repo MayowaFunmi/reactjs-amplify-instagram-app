@@ -24,7 +24,7 @@ const Post = ({ post, sub }) => {
 
   useEffect(() => {
     const getComments = async (id) => {
-      console.log('postId = ', postId);
+      //console.log('postId = ', postId);
       const result = await API.graphql(graphqlOperation(getPost, { id: id }));
       const postWithComments = result.data.getPost;
       //console.log('post with comments = ', postWithComments);
@@ -33,7 +33,7 @@ const Post = ({ post, sub }) => {
       //console.log('post comments = ', postComment);
     };
     getComments(postId);
-  }, [postComment, postId]);
+  }, [postId]);
 
   const toggleComment = (post) => {
     if (show) {
@@ -42,6 +42,7 @@ const Post = ({ post, sub }) => {
       setShow(true);
       setItem(post);
     }
+    console.log('item = ', item);
   };
 
   // save new comments
@@ -97,71 +98,6 @@ const Post = ({ post, sub }) => {
           </p>
         )}
         {/* card content */}
-        {/* <div className="card-content">
-              {post.likes.includes(
-                JSON.parse(localStorage.getItem('user'))._id
-              ) ? (
-                <span
-                  className="material-symbols-outlined red"
-                  onClick={() => {
-                    unLikePost(post._id);
-                  }}
-                >
-                  favorite
-                </span>
-              ) : (
-                <span
-                  className="material-symbols-outlined"
-                  onClick={() => {
-                    likePost(post._id);
-                  }}
-                >
-                  favorite
-                </span>
-              )}
-
-              {post.likes.length === 0 ? (
-                <p>{post.likes.length} Likes</p>
-              ) : post.likes.length === 1 ? (
-                <p
-                  style={{ cursor: 'pointer', color: 'blue' }}
-                  onClick={() => viewLikes(post)}
-                >
-                  {post.likes.length} Like
-                </p>
-              ) : (
-                <p
-                  style={{ cursor: 'pointer', color: 'blue' }}
-                  onClick={() => viewLikes(post)}
-                >
-                  {post.likes.length} Likes
-                </p>
-              )}
-
-              <p>{post.body}</p>
-              {post.comments.length === 1 ? (
-                <p
-                  style={{ cursor: 'pointer', fontWeight: 'bold' }}
-                  onClick={() => toggleComment(post)}
-                >
-                  View {post.comments.length} comment
-                </p>
-              ) : post.comments.length === 0 ? (
-                <p
-                  style={{ cursor: 'pointer', fontWeight: 'bold' }}
-                  onClick={() => toggleComment(post)}
-                >
-                  Be the first to comment
-                </p>
-              ) : (
-                <p
-                  style={{ cursor: 'pointer', fontWeight: 'bold' }}
-                  onClick={() => toggleComment(post)}
-                >
-                  View all {post.comments.length} comments
-                </p>
-              )}
-            </div> */}
 
         {/* comment */}
         <div className="add-comment">
