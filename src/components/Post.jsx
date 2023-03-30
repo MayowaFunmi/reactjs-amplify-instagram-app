@@ -3,28 +3,25 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { createComment } from '../graphql/mutations';
-import { getPost } from '../graphql/queries';
+import { getPost, getUser } from '../graphql/queries';
 import user1 from '../images/user1.jpg';
 import './Home.css';
 
 const Post = ({ post, sub }) => {
+  console.log('single post = ', post);
   const [comment, setComment] = useState('');
   const [comment2, setComment2] = useState('');
   const [postId, setPostId] = useState({});
   const [postComment, setPostComment] = useState([]);
   const [show, setShow] = useState(false);
-  const [item, setItem] = useState([]);
+  const [item, setItem] = useState({});
+  const [user, setUser] = useState({});
   const notifyError = (msg) => toast.error(msg);
   const notifySuccess = (msg) => toast.success(msg);
   const navigate = useNavigate();
-
   useEffect(() => {
     setPostId(post.id);
-  }, [post.id]);
-
-  useEffect(() => {
     const getComments = async (id) => {
-      //console.log('postId = ', postId);
       const result = await API.graphql(graphqlOperation(getPost, { id: id }));
       const postWithComments = result.data.getPost;
       //console.log('post with comments = ', postWithComments);
@@ -32,15 +29,22 @@ const Post = ({ post, sub }) => {
       setPostComment(postComments);
       //console.log('post comments = ', postComment);
     };
+    const userDetails = async (id) => {
+      const user = await API.graphql(graphqlOperation(getUser, { userID: id }));
+      console.log('user details = ', user);
+      setUser(user.data.getUser);
+    };
     getComments(postId);
-  }, [postId]);
+    userDetails(post.userID);
+  }, [post.id, postId, post.userID]);
 
-  const toggleComment = (post) => {
+  const toggleComment = (currentPost) => {
+    console.log('currentPost = ', currentPost);
     if (show) {
       setShow(false);
     } else {
       setShow(true);
-      setItem(post);
+      setItem(currentPost);
     }
     console.log('item = ', item);
   };
@@ -68,7 +72,7 @@ const Post = ({ post, sub }) => {
           <div className="card-pic">
             <img src={user1} alt="" />
           </div>
-          <h5>{post.username}</h5>
+          <h5>{post.userID}</h5>
         </div>
         {/* card image */}
         <div className="card-image">

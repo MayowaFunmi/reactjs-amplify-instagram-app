@@ -28,8 +28,9 @@ const App = () => {
       if (authenticated_user) {
         setUserSub(authenticated_user.attributes.sub);
       }
+      const users = await API.graphql(graphqlOperation(listUsers));
+      console.log('all users = ', users.data.listUsers.items);
       try {
-        const users = await API.graphql(graphqlOperation(listUsers));
         const usersArr = users.data.listUsers.items;
         console.log('users found = ', users.data.listUsers.items);
         for (let i = 0; i < usersArr.length; i++) {
