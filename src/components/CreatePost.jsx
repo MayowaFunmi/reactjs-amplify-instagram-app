@@ -15,18 +15,16 @@ const CreatePost = ({ userData }) => {
   const [url, setUrl] = useState('');
   const navigate = useNavigate();
   const auth = useContext(LoginContext);
-  console.log('status = ', auth.status);
+  //console.log('status = ', auth.status);
   const sendPost = async () => {
     if (url) {
-      console.log('url=', url);
       // saving post to AWS AppSync
       const newPost = {
         body: body,
         photo: url,
-        //author: userData,
         userID: userData.userId,
       };
-      console.log('new post data =', newPost);
+      //console.log('new post data =', newPost);
       try {
         // const post = await API.graphql({
         //   query: createPost,
@@ -35,7 +33,7 @@ const CreatePost = ({ userData }) => {
         const post = await API.graphql(
           graphqlOperation(createPost, { input: newPost })
         );
-        console.log('new post: ', post);
+        //console.log('new post: ', post);
         notifySuccess('Post Created Successfully');
         navigate('/');
       } catch (error) {

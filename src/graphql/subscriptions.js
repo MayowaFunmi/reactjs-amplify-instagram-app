@@ -4,6 +4,7 @@
 export const onCreateUser = /* GraphQL */ `
   subscription OnCreateUser($filter: ModelSubscriptionUserFilterInput) {
     onCreateUser(filter: $filter) {
+      id
       userId
       username
       firstName
@@ -36,7 +37,6 @@ export const onCreateUser = /* GraphQL */ `
         }
         nextToken
       }
-      id
       createdAt
       updatedAt
     }
@@ -45,6 +45,7 @@ export const onCreateUser = /* GraphQL */ `
 export const onUpdateUser = /* GraphQL */ `
   subscription OnUpdateUser($filter: ModelSubscriptionUserFilterInput) {
     onUpdateUser(filter: $filter) {
+      id
       userId
       username
       firstName
@@ -77,7 +78,6 @@ export const onUpdateUser = /* GraphQL */ `
         }
         nextToken
       }
-      id
       createdAt
       updatedAt
     }
@@ -86,6 +86,7 @@ export const onUpdateUser = /* GraphQL */ `
 export const onDeleteUser = /* GraphQL */ `
   subscription OnDeleteUser($filter: ModelSubscriptionUserFilterInput) {
     onDeleteUser(filter: $filter) {
+      id
       userId
       username
       firstName
@@ -118,7 +119,6 @@ export const onDeleteUser = /* GraphQL */ `
         }
         nextToken
       }
-      id
       createdAt
       updatedAt
     }

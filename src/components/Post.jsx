@@ -3,12 +3,11 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { createComment } from '../graphql/mutations';
-import { getPost, getUser } from '../graphql/queries';
+import { getPost, listUsers } from '../graphql/queries';
 import user1 from '../images/user1.jpg';
 import './Home.css';
 
 const Post = ({ post, sub }) => {
-  console.log('single post = ', post);
   const [comment, setComment] = useState('');
   const [comment2, setComment2] = useState('');
   const [postId, setPostId] = useState({});
@@ -27,26 +26,32 @@ const Post = ({ post, sub }) => {
       //console.log('post with comments = ', postWithComments);
       const postComments = postWithComments.comments.items; // access comments from post
       setPostComment(postComments);
-      //console.log('post comments = ', postComment);
+      console.log('post comments = ', postComment);
     };
     const userDetails = async (id) => {
-      const user = await API.graphql(graphqlOperation(getUser, { userID: id }));
-      console.log('user details = ', user);
-      setUser(user.data.getUser);
+      const users = await API.graphql(graphqlOperation(listUsers));
+      const usersArr = users.data.listUsers.items;
+      for (let i = 0; i < usersArr.length; i++) {
+        if (usersArr[i].userId === id) {
+          setUser(usersArr[i]);
+          break;
+        } //else {
+        //   notifyError('user not found!');
+        // }
+      }
     };
     getComments(postId);
     userDetails(post.userID);
+    setShow(false);
   }, [post.id, postId, post.userID]);
 
   const toggleComment = (currentPost) => {
+    console.log('show1 = ', show);
     console.log('currentPost = ', currentPost);
-    if (show) {
-      setShow(false);
-    } else {
-      setShow(true);
-      setItem(currentPost);
-    }
-    console.log('item = ', item);
+    setShow(true);
+    setItem(currentPost);
+    //console.log('item = ', item);
+    //console.log('show1 = ', show);
   };
 
   // save new comments
@@ -72,7 +77,7 @@ const Post = ({ post, sub }) => {
           <div className="card-pic">
             <img src={user1} alt="" />
           </div>
-          <h5>{post.userID}</h5>
+          <h5>{user.username}</h5>
         </div>
         {/* card image */}
         <div className="card-image">
@@ -121,8 +126,7 @@ const Post = ({ post, sub }) => {
         </div>
       </div>
 
-      {/* Shiw comments */}
-
+      {/* Show comments */}
       {show && (
         <div className="showComment">
           <div className="container">
@@ -139,7 +143,7 @@ const Post = ({ post, sub }) => {
                   <img src={user1} alt="" />
                 </div>
                 <h5>
-                  {item.firstName} {item.lastName}
+                  {user.firstName} {user.lastName}
                 </h5>
               </div>
               {/* comment section */}
@@ -147,44 +151,24 @@ const Post = ({ post, sub }) => {
                 className="comment-section"
                 style={{ borderBottom: '1px solid #00000029' }}
               >
-                {item.comments.map((comment, index) => {
-                  return (
-                    <p className="comm" key={index}>
-                      <span
-                        className="commenter"
-                        style={{ fontWeight: 'bolder' }}
-                      >
-                        {comment.postedBy.name}{' '}
-                      </span>
-                      <span className="commentText">{comment.comment}</span>
-                    </p>
-                  );
-                })}
+                {}
               </div>
 
-              {/* card content */}
-              <div className="card-content">
-                {item.likes.length === 1 ? (
-                  <p>{item.likes.length} Like</p>
-                ) : (
-                  <p>{item.likes.length} Likes</p>
-                )}
+              {/* card content for likes */}
 
-                <p>{item.body}</p>
-              </div>
               {/* comment */}
               <div className="add-comment">
                 <span className="material-symbols-outlined">mood</span>
                 <input
                   type="text"
                   placeholder="Add a comment"
-                  value={comment2}
-                  onChange={(e) => setComment2(e.target.value)}
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
                 />
                 <button
                   className="comment"
                   onClick={() => {
-                    makeComment(comment2, item.id);
+                    makeComment(comment, item._id);
                     toggleComment();
                   }}
                 >

@@ -6,7 +6,8 @@ input AMPLIFY {
   globalAuthRule: AuthRule = { allow: public }
 } # FOR TESTING ONLY!
 type User @model {
-  userId: String
+  id: ID!
+  userId: String @index
   username: String!
   firstName: String!
   lastName: String!
@@ -32,7 +33,7 @@ type Comment @model {
   id: ID!
   text: String!
   userID: String! @index(name: "byUser")
-  postID: ID! @index(name: "byPost", sortKeyFields: ["text"])
+  postID: ID! @index(name: "byPost")
 }
 # type Blog @model {
 #   id: ID!

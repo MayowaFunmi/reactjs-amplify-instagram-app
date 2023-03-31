@@ -4,6 +4,7 @@
 export const getUser = /* GraphQL */ `
   query GetUser($id: ID!) {
     getUser(id: $id) {
+      id
       userId
       username
       firstName
@@ -36,7 +37,6 @@ export const getUser = /* GraphQL */ `
         }
         nextToken
       }
-      id
       createdAt
       updatedAt
     }
@@ -50,6 +50,7 @@ export const listUsers = /* GraphQL */ `
   ) {
     listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
+        id
         userId
         username
         firstName
@@ -66,7 +67,6 @@ export const listUsers = /* GraphQL */ `
         comments {
           nextToken
         }
-        id
         createdAt
         updatedAt
       }
@@ -150,6 +150,46 @@ export const listComments = /* GraphQL */ `
     }
   }
 `;
+export const usersByUserId = /* GraphQL */ `
+  query UsersByUserId(
+    $userId: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    usersByUserId(
+      userId: $userId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        userId
+        username
+        firstName
+        lastName
+        bio
+        location
+        email
+        photo
+        dateOfBirth
+        privacy
+        posts {
+          nextToken
+        }
+        comments {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const postsByUserID = /* GraphQL */ `
   query PostsByUserID(
     $userID: String!
@@ -207,18 +247,16 @@ export const commentsByUserID = /* GraphQL */ `
     }
   }
 `;
-export const commentsByPostIDAndText = /* GraphQL */ `
-  query CommentsByPostIDAndText(
+export const commentsByPostID = /* GraphQL */ `
+  query CommentsByPostID(
     $postID: ID!
-    $text: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelCommentFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    commentsByPostIDAndText(
+    commentsByPostID(
       postID: $postID
-      text: $text
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit

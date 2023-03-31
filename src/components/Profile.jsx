@@ -22,8 +22,8 @@ const Profile = ({ userData, sub }) => {
   const navigate = useNavigate();
 
   const auth = useContext(LoginContext);
-  console.log('data = ', userData);
-  console.log('status = ', auth.status);
+  //console.log('data = ', userData);
+  //console.log('status = ', auth.status);
 
   useEffect(() => {
     auth.user();
@@ -45,14 +45,14 @@ const Profile = ({ userData, sub }) => {
           privacy: privacy,
         },
       };
-      console.log(userProfile);
+      //console.log(userProfile);
       try {
         const newUser = await API.graphql({
           query: createUser,
           variables: userProfile,
         });
         //console.log('auth user = ', newAuthUser);
-        console.log('new user = ', newUser);
+        //console.log('new user = ', newUser);
         notifySuccess('User Created Successfully!!');
         navigate('/');
       } catch (error) {
