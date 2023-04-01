@@ -6,6 +6,7 @@ import { createComment } from '../graphql/mutations';
 import { getPost, listUsers } from '../graphql/queries';
 import user1 from '../images/user1.jpg';
 import './Home.css';
+import Comments from './Comments';
 
 const Post = ({ post, sub }) => {
   const [comment, setComment] = useState('');
@@ -18,6 +19,7 @@ const Post = ({ post, sub }) => {
   const notifyError = (msg) => toast.error(msg);
   const notifySuccess = (msg) => toast.success(msg);
   const navigate = useNavigate();
+
   useEffect(() => {
     setPostId(post.id);
     const getComments = async (id) => {
@@ -25,8 +27,9 @@ const Post = ({ post, sub }) => {
       const postWithComments = result.data.getPost;
       //console.log('post with comments = ', postWithComments);
       const postComments = postWithComments.comments.items; // access comments from post
+      //console.log('post comments 1= ', postComments);
       setPostComment(postComments);
-      console.log('post comments = ', postComment);
+      //console.log('post comments = ', postComment);
     };
     const userDetails = async (id) => {
       const users = await API.graphql(graphqlOperation(listUsers));
@@ -41,17 +44,22 @@ const Post = ({ post, sub }) => {
       }
     };
     getComments(postId);
-    userDetails(post.userID);
-    setShow(false);
-  }, [post.id, postId, post.userID]);
+    userDetails(postComment.userID);
+    //setShow(false);
+  }, [post.id, postId, post.userID, postComment]);
 
   const toggleComment = (currentPost) => {
-    console.log('show1 = ', show);
-    console.log('currentPost = ', currentPost);
-    setShow(true);
-    setItem(currentPost);
-    //console.log('item = ', item);
-    //console.log('show1 = ', show);
+    if (show) {
+      setShow(false);
+      //setItem([]);
+    } else {
+      setShow(true);
+      setItem(currentPost);
+    }
+    // console.log('show1 = ', show);
+    // console.log('currentPost = ', currentPost);
+    // setShow(true);
+    // setItem(currentPost);
   };
 
   // save new comments
@@ -151,7 +159,9 @@ const Post = ({ post, sub }) => {
                 className="comment-section"
                 style={{ borderBottom: '1px solid #00000029' }}
               >
-                {}
+                {postComment.map((com, index) => {
+                  return <Comments com={com} index={index} />;
+                })}
               </div>
 
               {/* card content for likes */}
@@ -162,13 +172,13 @@ const Post = ({ post, sub }) => {
                 <input
                   type="text"
                   placeholder="Add a comment"
-                  value={comment}
-                  onChange={(e) => setComment(e.target.value)}
+                  value={comment2}
+                  onChange={(e) => setComment2(e.target.value)}
                 />
                 <button
                   className="comment"
                   onClick={() => {
-                    makeComment(comment, item._id);
+                    makeComment(comment2, post.id);
                     toggleComment();
                   }}
                 >
