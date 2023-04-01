@@ -13,6 +13,7 @@ const Post = ({ post, sub }) => {
   const [comment2, setComment2] = useState('');
   const [postId, setPostId] = useState({});
   const [postComment, setPostComment] = useState([]);
+  const [postWithComment, setPostWithComment] = useState({});
   const [show, setShow] = useState(false);
   const [item, setItem] = useState({});
   const [user, setUser] = useState({});
@@ -25,6 +26,7 @@ const Post = ({ post, sub }) => {
     const getComments = async (id) => {
       const result = await API.graphql(graphqlOperation(getPost, { id: id }));
       const postWithComments = result.data.getPost;
+      setPostWithComment(postWithComments);
       //console.log('post with comments = ', postWithComments);
       const postComments = postWithComments.comments.items; // access comments from post
       //console.log('post comments 1= ', postComments);
@@ -44,9 +46,9 @@ const Post = ({ post, sub }) => {
       }
     };
     getComments(postId);
-    userDetails(postComment.userID);
+    userDetails(postWithComment.userID);
     //setShow(false);
-  }, [post.id, postId, post.userID, postComment]);
+  }, [post.id, postId, post.userID, postComment, postWithComment]);
 
   const toggleComment = (currentPost) => {
     if (show) {
@@ -91,6 +93,13 @@ const Post = ({ post, sub }) => {
         <div className="card-image">
           <img src={post.photo} alt="" />
         </div>
+
+        {/* card content */}
+        <div className="card-content">
+          <span className="material-symbols-outlined red">favorite</span>
+          <span className="material-symbols-outlined">favorite</span>
+        </div>
+
         <p>{post.body}</p>
         {postComment.length === 1 ? (
           <p
@@ -182,7 +191,7 @@ const Post = ({ post, sub }) => {
                     toggleComment();
                   }}
                 >
-                  Post
+                  Add Comment
                 </button>
               </div>
             </div>

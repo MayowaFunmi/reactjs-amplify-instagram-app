@@ -37,8 +37,60 @@ export const getUser = /* GraphQL */ `
         }
         nextToken
       }
+      followers {
+        items {
+          id
+          userId
+          username
+          firstName
+          lastName
+          bio
+          location
+          email
+          photo
+          dateOfBirth
+          privacy
+          createdAt
+          updatedAt
+          userFollowersId
+          userFollowingId
+        }
+        nextToken
+      }
+      following {
+        items {
+          id
+          userId
+          username
+          firstName
+          lastName
+          bio
+          location
+          email
+          photo
+          dateOfBirth
+          privacy
+          createdAt
+          updatedAt
+          userFollowersId
+          userFollowingId
+        }
+        nextToken
+      }
+      likes {
+        items {
+          id
+          userID
+          postID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
+      userFollowersId
+      userFollowingId
     }
   }
 `;
@@ -67,8 +119,19 @@ export const listUsers = /* GraphQL */ `
         comments {
           nextToken
         }
+        followers {
+          nextToken
+        }
+        following {
+          nextToken
+        }
+        likes {
+          nextToken
+        }
         createdAt
         updatedAt
+        userFollowersId
+        userFollowingId
       }
       nextToken
     }
@@ -92,6 +155,16 @@ export const getPost = /* GraphQL */ `
         nextToken
       }
       userID
+      likes {
+        items {
+          id
+          userID
+          postID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -112,6 +185,9 @@ export const listPosts = /* GraphQL */ `
           nextToken
         }
         userID
+        likes {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -141,6 +217,35 @@ export const listComments = /* GraphQL */ `
       items {
         id
         text
+        userID
+        postID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getLike = /* GraphQL */ `
+  query GetLike($id: ID!) {
+    getLike(id: $id) {
+      id
+      userID
+      postID
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listLikes = /* GraphQL */ `
+  query ListLikes(
+    $filter: ModelLikeFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listLikes(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
         userID
         postID
         createdAt
@@ -183,8 +288,19 @@ export const usersByUserId = /* GraphQL */ `
         comments {
           nextToken
         }
+        followers {
+          nextToken
+        }
+        following {
+          nextToken
+        }
+        likes {
+          nextToken
+        }
         createdAt
         updatedAt
+        userFollowersId
+        userFollowingId
       }
       nextToken
     }
@@ -213,6 +329,9 @@ export const postsByUserID = /* GraphQL */ `
           nextToken
         }
         userID
+        likes {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -265,6 +384,58 @@ export const commentsByPostID = /* GraphQL */ `
       items {
         id
         text
+        userID
+        postID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const likesByUserID = /* GraphQL */ `
+  query LikesByUserID(
+    $userID: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelLikeFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    likesByUserID(
+      userID: $userID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        userID
+        postID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const likesByPostID = /* GraphQL */ `
+  query LikesByPostID(
+    $postID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelLikeFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    likesByPostID(
+      postID: $postID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
         userID
         postID
         createdAt

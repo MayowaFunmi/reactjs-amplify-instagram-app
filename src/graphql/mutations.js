@@ -40,8 +40,60 @@ export const createUser = /* GraphQL */ `
         }
         nextToken
       }
+      followers {
+        items {
+          id
+          userId
+          username
+          firstName
+          lastName
+          bio
+          location
+          email
+          photo
+          dateOfBirth
+          privacy
+          createdAt
+          updatedAt
+          userFollowersId
+          userFollowingId
+        }
+        nextToken
+      }
+      following {
+        items {
+          id
+          userId
+          username
+          firstName
+          lastName
+          bio
+          location
+          email
+          photo
+          dateOfBirth
+          privacy
+          createdAt
+          updatedAt
+          userFollowersId
+          userFollowingId
+        }
+        nextToken
+      }
+      likes {
+        items {
+          id
+          userID
+          postID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
+      userFollowersId
+      userFollowingId
     }
   }
 `;
@@ -84,8 +136,60 @@ export const updateUser = /* GraphQL */ `
         }
         nextToken
       }
+      followers {
+        items {
+          id
+          userId
+          username
+          firstName
+          lastName
+          bio
+          location
+          email
+          photo
+          dateOfBirth
+          privacy
+          createdAt
+          updatedAt
+          userFollowersId
+          userFollowingId
+        }
+        nextToken
+      }
+      following {
+        items {
+          id
+          userId
+          username
+          firstName
+          lastName
+          bio
+          location
+          email
+          photo
+          dateOfBirth
+          privacy
+          createdAt
+          updatedAt
+          userFollowersId
+          userFollowingId
+        }
+        nextToken
+      }
+      likes {
+        items {
+          id
+          userID
+          postID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
+      userFollowersId
+      userFollowingId
     }
   }
 `;
@@ -128,8 +232,60 @@ export const deleteUser = /* GraphQL */ `
         }
         nextToken
       }
+      followers {
+        items {
+          id
+          userId
+          username
+          firstName
+          lastName
+          bio
+          location
+          email
+          photo
+          dateOfBirth
+          privacy
+          createdAt
+          updatedAt
+          userFollowersId
+          userFollowingId
+        }
+        nextToken
+      }
+      following {
+        items {
+          id
+          userId
+          username
+          firstName
+          lastName
+          bio
+          location
+          email
+          photo
+          dateOfBirth
+          privacy
+          createdAt
+          updatedAt
+          userFollowersId
+          userFollowingId
+        }
+        nextToken
+      }
+      likes {
+        items {
+          id
+          userID
+          postID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
+      userFollowersId
+      userFollowingId
     }
   }
 `;
@@ -154,6 +310,16 @@ export const createPost = /* GraphQL */ `
         nextToken
       }
       userID
+      likes {
+        items {
+          id
+          userID
+          postID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -180,6 +346,16 @@ export const updatePost = /* GraphQL */ `
         nextToken
       }
       userID
+      likes {
+        items {
+          id
+          userID
+          postID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -206,6 +382,16 @@ export const deletePost = /* GraphQL */ `
         nextToken
       }
       userID
+      likes {
+        items {
+          id
+          userID
+          postID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -249,6 +435,48 @@ export const deleteComment = /* GraphQL */ `
     deleteComment(input: $input, condition: $condition) {
       id
       text
+      userID
+      postID
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createLike = /* GraphQL */ `
+  mutation CreateLike(
+    $input: CreateLikeInput!
+    $condition: ModelLikeConditionInput
+  ) {
+    createLike(input: $input, condition: $condition) {
+      id
+      userID
+      postID
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateLike = /* GraphQL */ `
+  mutation UpdateLike(
+    $input: UpdateLikeInput!
+    $condition: ModelLikeConditionInput
+  ) {
+    updateLike(input: $input, condition: $condition) {
+      id
+      userID
+      postID
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteLike = /* GraphQL */ `
+  mutation DeleteLike(
+    $input: DeleteLikeInput!
+    $condition: ModelLikeConditionInput
+  ) {
+    deleteLike(input: $input, condition: $condition) {
+      id
       userID
       postID
       createdAt

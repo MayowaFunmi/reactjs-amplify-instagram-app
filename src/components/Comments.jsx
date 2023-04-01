@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { listUsers } from '../graphql/queries';
 
 const Comments = ({ com, index }) => {
-  console.log('com = ', com);
   const [user, setUser] = useState({});
 
   useEffect(() => {
