@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { API, graphqlOperation } from 'aws-amplify';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { createComment } from '../graphql/mutations';
+import { createComment, createLike, deleteLike } from '../graphql/mutations';
 import { getPost, listUsers } from '../graphql/queries';
 import user1 from '../images/user1.jpg';
 import './Home.css';
@@ -13,8 +13,10 @@ const Post = ({ post, sub }) => {
   const [comment2, setComment2] = useState('');
   const [postId, setPostId] = useState({});
   const [postComment, setPostComment] = useState([]);
+  const [postLikes, setPostLikes] = useState([]);
   const [postWithComment, setPostWithComment] = useState({});
   const [show, setShow] = useState(false);
+  const [userLike, setUserLike] = useState(false);
   const [item, setItem] = useState({});
   const [user, setUser] = useState({});
   const notifyError = (msg) => toast.error(msg);
@@ -25,13 +27,24 @@ const Post = ({ post, sub }) => {
     setPostId(post.id);
     const getComments = async (id) => {
       const result = await API.graphql(graphqlOperation(getPost, { id: id }));
-      const postWithComments = result.data.getPost;
-      setPostWithComment(postWithComments);
-      //console.log('post with comments = ', postWithComments);
-      const postComments = postWithComments.comments.items; // access comments from post
+      const postData = result.data.getPost;
+      setPostWithComment(postData);
+      //console.log('post with comments = ', postData);
+      const postComments = postData.comments.items; // access comments from post
       //console.log('post comments 1= ', postComments);
       setPostComment(postComments);
       //console.log('post comments = ', postComment);
+      const postLikes = postData.likes.items;
+      //console.log('post likes = ', postLikes);
+      setPostLikes(postLikes);
+      // iterate to check if user already likes post
+      //if set to true if user like present
+      for (let i = 0; i < postLikes.length; i++) {
+        if (postLikes[i].userID === sub) {
+          setUserLike(true);
+          break;
+        }
+      }
     };
     const userDetails = async (id) => {
       const users = await API.graphql(graphqlOperation(listUsers));
@@ -48,7 +61,7 @@ const Post = ({ post, sub }) => {
     getComments(postId);
     userDetails(postWithComment.userID);
     //setShow(false);
-  }, [post.id, postId, post.userID, postComment, postWithComment]);
+  }, [post.id, postId, post.userID, postComment, postWithComment, sub]);
 
   const toggleComment = (currentPost) => {
     if (show) {
@@ -79,6 +92,33 @@ const Post = ({ post, sub }) => {
     }
   };
 
+  const likePost = async (userId, postId) => {
+    const postParams = {
+      input: { userID: userId, postID: postId },
+    };
+    try {
+      await API.graphql(graphqlOperation(deleteLike, postParams));
+      notifySuccess('You like this post!');
+    } catch (error) {
+      console.log('error = ', error);
+      notifyError(error);
+    }
+  };
+
+  const unlikePost = async (userId, postId) => {
+    const postParams = {
+      input: { userID: userId, postID: postId },
+    };
+    try {
+      await API.graphql(graphqlOperation(createLike, postParams));
+      setUserLike(false);
+      notifySuccess('You hate this post!');
+    } catch (error) {
+      console.log('error = ', error);
+      notifyError(error);
+    }
+  };
+
   return (
     <>
       <div className="card" key={post.id}>
@@ -96,8 +136,25 @@ const Post = ({ post, sub }) => {
 
         {/* card content */}
         <div className="card-content">
-          <span className="material-symbols-outlined red">favorite</span>
-          <span className="material-symbols-outlined">favorite</span>
+          {userLike ? (
+            <span
+              className="material-symbols-outlined red"
+              onClick={() => {
+                unlikePost(post.userID, post.id);
+              }}
+            >
+              favorite
+            </span>
+          ) : (
+            <span
+              className="material-symbols-outlined"
+              onClick={() => {
+                likePost(post.userID, post.id);
+              }}
+            >
+              favorite
+            </span>
+          )}
         </div>
 
         <p>{post.body}</p>
