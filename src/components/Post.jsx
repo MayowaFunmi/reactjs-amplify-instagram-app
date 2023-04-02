@@ -15,6 +15,7 @@ const Post = ({ post, sub }) => {
   const [postComment, setPostComment] = useState([]);
   const [postLikes, setPostLikes] = useState([]);
   const [postWithComment, setPostWithComment] = useState({});
+  const [like, setLike] = useState({});
   const [show, setShow] = useState(false);
   const [userLike, setUserLike] = useState(false);
   const [item, setItem] = useState({});
@@ -36,7 +37,7 @@ const Post = ({ post, sub }) => {
       //console.log('post comments = ', postComment);
       const postLikes = postData.likes.items;
       //console.log('post likes = ', postLikes);
-      setPostLikes(postLikes);
+      //setPostLikes(postLikes);
       // iterate to check if user already likes post
       //if set to true if user like present
       for (let i = 0; i < postLikes.length; i++) {
@@ -94,10 +95,15 @@ const Post = ({ post, sub }) => {
 
   const likePost = async (userId, postId) => {
     const postParams = {
-      input: { userID: userId, postID: postId },
+      input: { userID: sub, postID: postId },
     };
     try {
-      await API.graphql(graphqlOperation(deleteLike, postParams));
+      const likePost = await API.graphql(
+        graphqlOperation(createLike, postParams)
+      );
+      console.log('likePost = ', likePost);
+      setLike(likePost.data.createLike);
+      console.log('like = ', like);
       notifySuccess('You like this post!');
     } catch (error) {
       console.log('error = ', error);
@@ -106,11 +112,17 @@ const Post = ({ post, sub }) => {
   };
 
   const unlikePost = async (userId, postId) => {
+    // const postParams = {
+    //   input: { userID: sub, postID: postId },
+    // };
+    console.log('like = ', like);
     const postParams = {
-      input: { userID: userId, postID: postId },
+      input: {
+        id: like.id,
+      },
     };
     try {
-      await API.graphql(graphqlOperation(createLike, postParams));
+      await API.graphql(graphqlOperation(deleteLike, postParams));
       setUserLike(false);
       notifySuccess('You hate this post!');
     } catch (error) {
