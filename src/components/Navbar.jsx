@@ -39,7 +39,7 @@ const Navbar = () => {
           <Link to="/create_post">
             <li>Create Post</li>
           </Link>
-          <Link to="/">
+          <Link to="/change_password">
             <li>Change Password</li>
           </Link>
           <Link to="/">
@@ -57,6 +57,9 @@ const Navbar = () => {
           </Link>
           <Link to="/signin">
             <li>Login</li>
+          </Link>
+          <Link to="/forgot_password">
+            <li>Forgot Password</li>
           </Link>
         </>,
       ];

@@ -12,6 +12,8 @@ import { API, Auth, graphqlOperation } from 'aws-amplify';
 import { listUsers } from './graphql/queries';
 import LoginContext from './context/LoginContext';
 import Modal from './components/Modal';
+import ForgotPassword from './components/ForgotPassword';
+import ChangePassword from './components/ChangePassword';
 
 const accessToken = localStorage.getItem('accessToken');
 const refreshToken = localStorage.getItem('refreshToken');
@@ -60,6 +62,8 @@ const App = () => {
             <Route path="/" element={<Home sub={userSub} />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/signin" element={<SignIn />} />
+            <Route path="/forgot_password" element={<ForgotPassword />} />
+            <Route path="/change_password" element={<ChangePassword />} />
             <Route
               path="/profile"
               element={<Profile userData={userData} sub={userSub} />}
@@ -69,6 +73,7 @@ const App = () => {
               element={<CreatePost userData={userData} />}
             />
           </Routes>
+
           <ToastContainer theme="dark" />
           {modalOpen && <Modal setModalOpen={setModalOpen}></Modal>}
         </LoginContext.Provider>

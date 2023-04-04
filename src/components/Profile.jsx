@@ -35,7 +35,7 @@ const Profile = ({ userData, sub }) => {
 
       const userProfile = {
         input: {
-          userId: sub,
+          userId: authenticated_user.attributes.sub,
           username: authenticated_user.username,
           firstName: firstName,
           lastName: lastName,

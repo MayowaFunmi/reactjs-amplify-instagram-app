@@ -37,7 +37,7 @@ const Post = ({ post, sub }) => {
       //console.log('post comments = ', postComment);
       const postLikes = postData.likes.items;
       //console.log('post likes = ', postLikes);
-      //setPostLikes(postLikes);
+      setPostLikes(postLikes);
       // iterate to check if user already likes post
       //if set to true if user like present
       for (let i = 0; i < postLikes.length; i++) {
@@ -139,7 +139,9 @@ const Post = ({ post, sub }) => {
           <div className="card-pic">
             <img src={user1} alt="" />
           </div>
-          <h5>{user.username}</h5>
+          <h5>
+            {user.username}
+          </h5>
         </div>
         {/* card image */}
         <div className="card-image">
@@ -166,6 +168,13 @@ const Post = ({ post, sub }) => {
             >
               favorite
             </span>
+          )}
+          {postLikes.length > 1 ? (
+            <span>{postLikes.length} people like this post</span>
+          ) : postLikes.length === 1 ? (
+            <span>{postLikes.length} person like this post</span>
+          ) : (
+            <p>Be the first to like this post</p>
           )}
         </div>
 

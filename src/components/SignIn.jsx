@@ -3,6 +3,7 @@ import { Auth } from 'aws-amplify';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../images/insta-logo.jpeg';
 import { toast } from 'react-toastify';
+import './SignIn.css';
 
 const SignIn = () => {
   const [formData, setFormData] = useState({
