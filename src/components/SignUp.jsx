@@ -13,6 +13,7 @@ const SignUp = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [confirmationCode, setConfirmationCode] = useState(0);
   const [confirmForm, setConfirmForm] = useState(false);
+  const [isAvailable, setIsAvailable] = useState(false);
 
   const notifyError = (msg) => toast.error(msg);
   const notifySuccess = (msg) => toast.success(msg);
@@ -32,8 +33,23 @@ const SignUp = () => {
     }
   }
 
+  const checkUsername = async () => {
+    try {
+      await Auth.adminGetUser({
+        Username: username,
+        UserPoolId: 'us-east-1_9Sr7uWyYE',
+      });
+      setIsAvailable(true);
+    } catch (error) {
+      setIsAvailable(false);
+      notifyError(`${username} is already taken`);
+    }
+    console.log(isAvailable);
+  };
+
   async function handleSignUp(e) {
     //e.preventDefault();
+    // check username
     if (password !== confirmPassword) {
       notifyError("Passwords don't match!!!");
       return;

@@ -11,6 +11,7 @@ type User @model {
   username: String!
   firstName: String!
   lastName: String!
+  gender: String
   bio: String
   location: String
   email: String!
@@ -19,8 +20,9 @@ type User @model {
   privacy: String
   posts: [Post] @hasMany(indexName: "userPost", fields: ["userId"])
   comments: [Comment] @hasMany(indexName: "byUser", fields: ["userId"])
-  followers: [User] @hasMany
-  following: [User] @hasMany
+  followers: [Follower] @hasMany(indexName: "userFollower", fields: ["userId"])
+  following: [Following]
+    @hasMany(indexName: "userFollowing", fields: ["userId"])
   likes: [Like] @hasMany(indexName: "userLikes", fields: ["userId"])
 }
 
@@ -44,6 +46,16 @@ type Like @model {
   id: ID!
   userID: String @index(name: "userLikes")
   postID: ID @index(name: "postLikes")
+}
+
+type Follower @model {
+  id: ID!
+  userID: String @index(name: "userFollower")
+}
+
+type Following @model {
+  id: ID!
+  userID: String @index(name: "userFollowing")
 }
 # type Blog @model {
 #   id: ID!

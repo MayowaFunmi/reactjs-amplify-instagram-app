@@ -12,6 +12,7 @@ export const createUser = /* GraphQL */ `
       username
       firstName
       lastName
+      gender
       bio
       location
       email
@@ -43,40 +44,18 @@ export const createUser = /* GraphQL */ `
       followers {
         items {
           id
-          userId
-          username
-          firstName
-          lastName
-          bio
-          location
-          email
-          photo
-          dateOfBirth
-          privacy
+          userID
           createdAt
           updatedAt
-          userFollowersId
-          userFollowingId
         }
         nextToken
       }
       following {
         items {
           id
-          userId
-          username
-          firstName
-          lastName
-          bio
-          location
-          email
-          photo
-          dateOfBirth
-          privacy
+          userID
           createdAt
           updatedAt
-          userFollowersId
-          userFollowingId
         }
         nextToken
       }
@@ -92,8 +71,6 @@ export const createUser = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      userFollowersId
-      userFollowingId
     }
   }
 `;
@@ -108,6 +85,7 @@ export const updateUser = /* GraphQL */ `
       username
       firstName
       lastName
+      gender
       bio
       location
       email
@@ -139,40 +117,18 @@ export const updateUser = /* GraphQL */ `
       followers {
         items {
           id
-          userId
-          username
-          firstName
-          lastName
-          bio
-          location
-          email
-          photo
-          dateOfBirth
-          privacy
+          userID
           createdAt
           updatedAt
-          userFollowersId
-          userFollowingId
         }
         nextToken
       }
       following {
         items {
           id
-          userId
-          username
-          firstName
-          lastName
-          bio
-          location
-          email
-          photo
-          dateOfBirth
-          privacy
+          userID
           createdAt
           updatedAt
-          userFollowersId
-          userFollowingId
         }
         nextToken
       }
@@ -188,8 +144,6 @@ export const updateUser = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      userFollowersId
-      userFollowingId
     }
   }
 `;
@@ -204,6 +158,7 @@ export const deleteUser = /* GraphQL */ `
       username
       firstName
       lastName
+      gender
       bio
       location
       email
@@ -235,40 +190,18 @@ export const deleteUser = /* GraphQL */ `
       followers {
         items {
           id
-          userId
-          username
-          firstName
-          lastName
-          bio
-          location
-          email
-          photo
-          dateOfBirth
-          privacy
+          userID
           createdAt
           updatedAt
-          userFollowersId
-          userFollowingId
         }
         nextToken
       }
       following {
         items {
           id
-          userId
-          username
-          firstName
-          lastName
-          bio
-          location
-          email
-          photo
-          dateOfBirth
-          privacy
+          userID
           createdAt
           updatedAt
-          userFollowersId
-          userFollowingId
         }
         nextToken
       }
@@ -284,8 +217,6 @@ export const deleteUser = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      userFollowersId
-      userFollowingId
     }
   }
 `;
@@ -479,6 +410,84 @@ export const deleteLike = /* GraphQL */ `
       id
       userID
       postID
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createFollower = /* GraphQL */ `
+  mutation CreateFollower(
+    $input: CreateFollowerInput!
+    $condition: ModelFollowerConditionInput
+  ) {
+    createFollower(input: $input, condition: $condition) {
+      id
+      userID
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateFollower = /* GraphQL */ `
+  mutation UpdateFollower(
+    $input: UpdateFollowerInput!
+    $condition: ModelFollowerConditionInput
+  ) {
+    updateFollower(input: $input, condition: $condition) {
+      id
+      userID
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteFollower = /* GraphQL */ `
+  mutation DeleteFollower(
+    $input: DeleteFollowerInput!
+    $condition: ModelFollowerConditionInput
+  ) {
+    deleteFollower(input: $input, condition: $condition) {
+      id
+      userID
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createFollowing = /* GraphQL */ `
+  mutation CreateFollowing(
+    $input: CreateFollowingInput!
+    $condition: ModelFollowingConditionInput
+  ) {
+    createFollowing(input: $input, condition: $condition) {
+      id
+      userID
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateFollowing = /* GraphQL */ `
+  mutation UpdateFollowing(
+    $input: UpdateFollowingInput!
+    $condition: ModelFollowingConditionInput
+  ) {
+    updateFollowing(input: $input, condition: $condition) {
+      id
+      userID
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteFollowing = /* GraphQL */ `
+  mutation DeleteFollowing(
+    $input: DeleteFollowingInput!
+    $condition: ModelFollowingConditionInput
+  ) {
+    deleteFollowing(input: $input, condition: $condition) {
+      id
+      userID
       createdAt
       updatedAt
     }

@@ -17,6 +17,7 @@ const Post = ({ post, sub }) => {
   const [postWithComment, setPostWithComment] = useState({});
   const [like, setLike] = useState({});
   const [show, setShow] = useState(false);
+  const [date, setDate] = useState('');
   const [userLike, setUserLike] = useState(false);
   const [item, setItem] = useState({});
   const [user, setUser] = useState({});
@@ -47,6 +48,7 @@ const Post = ({ post, sub }) => {
         }
       }
     };
+
     const userDetails = async (id) => {
       const users = await API.graphql(graphqlOperation(listUsers));
       const usersArr = users.data.listUsers.items;
@@ -59,10 +61,46 @@ const Post = ({ post, sub }) => {
         // }
       }
     };
+    const timeAgo = (date) => {
+      const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+      let interval = Math.floor(seconds / 31536000);
+      if (interval >= 1) {
+        setDate(`${interval} year${interval === 1 ? '' : 's'} ago`);
+        return;
+      }
+      interval = Math.floor(seconds / 2592000);
+      if (interval >= 1) {
+        setDate(`${interval} month${interval === 1 ? '' : 's'} ago`);
+        return;
+      }
+      interval = Math.floor(seconds / 604800);
+      if (interval >= 1) {
+        setDate(`${interval} week${interval === 1 ? '' : 's'} ago`);
+        return;
+      }
+      interval = Math.floor(seconds / 86400);
+      if (interval >= 1) {
+        setDate(`${interval} day${interval === 1 ? '' : 's'} ago`);
+        return;
+      }
+      interval = Math.floor(seconds / 3600);
+      if (interval >= 1) {
+        setDate(`${interval} hour${interval === 1 ? '' : 's'} ago`);
+        return;
+      }
+      interval = Math.floor(seconds / 60);
+      if (interval >= 1) {
+        setDate(`${interval} minute${interval === 1 ? '' : 's'} ago`);
+        return;
+      }
+      setDate(`${interval} second${interval === 1 ? '' : 's'} ago`);
+    };
+
+    timeAgo(post.createdAt);
     getComments(postId);
     userDetails(postWithComment.userID);
     //setShow(false);
-  }, [post.id, postId, post.userID, postComment, postWithComment, sub]);
+  }, [post, postId, postComment, postWithComment, sub]);
 
   const toggleComment = (currentPost) => {
     if (show) {
@@ -141,6 +179,7 @@ const Post = ({ post, sub }) => {
           </div>
           <h5>
             {user.username}
+            <span style={{ float: 'Right', color: 'Green' }}>{date}</span>
           </h5>
         </div>
         {/* card image */}

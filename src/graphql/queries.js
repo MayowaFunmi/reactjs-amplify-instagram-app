@@ -9,6 +9,7 @@ export const getUser = /* GraphQL */ `
       username
       firstName
       lastName
+      gender
       bio
       location
       email
@@ -40,40 +41,18 @@ export const getUser = /* GraphQL */ `
       followers {
         items {
           id
-          userId
-          username
-          firstName
-          lastName
-          bio
-          location
-          email
-          photo
-          dateOfBirth
-          privacy
+          userID
           createdAt
           updatedAt
-          userFollowersId
-          userFollowingId
         }
         nextToken
       }
       following {
         items {
           id
-          userId
-          username
-          firstName
-          lastName
-          bio
-          location
-          email
-          photo
-          dateOfBirth
-          privacy
+          userID
           createdAt
           updatedAt
-          userFollowersId
-          userFollowingId
         }
         nextToken
       }
@@ -89,8 +68,6 @@ export const getUser = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      userFollowersId
-      userFollowingId
     }
   }
 `;
@@ -107,6 +84,7 @@ export const listUsers = /* GraphQL */ `
         username
         firstName
         lastName
+        gender
         bio
         location
         email
@@ -130,8 +108,6 @@ export const listUsers = /* GraphQL */ `
         }
         createdAt
         updatedAt
-        userFollowersId
-        userFollowingId
       }
       nextToken
     }
@@ -255,6 +231,60 @@ export const listLikes = /* GraphQL */ `
     }
   }
 `;
+export const getFollower = /* GraphQL */ `
+  query GetFollower($id: ID!) {
+    getFollower(id: $id) {
+      id
+      userID
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listFollowers = /* GraphQL */ `
+  query ListFollowers(
+    $filter: ModelFollowerFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listFollowers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        userID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getFollowing = /* GraphQL */ `
+  query GetFollowing($id: ID!) {
+    getFollowing(id: $id) {
+      id
+      userID
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listFollowings = /* GraphQL */ `
+  query ListFollowings(
+    $filter: ModelFollowingFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listFollowings(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        userID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const usersByUserId = /* GraphQL */ `
   query UsersByUserId(
     $userId: String!
@@ -276,6 +306,7 @@ export const usersByUserId = /* GraphQL */ `
         username
         firstName
         lastName
+        gender
         bio
         location
         email
@@ -299,8 +330,6 @@ export const usersByUserId = /* GraphQL */ `
         }
         createdAt
         updatedAt
-        userFollowersId
-        userFollowingId
       }
       nextToken
     }
@@ -438,6 +467,56 @@ export const likesByPostID = /* GraphQL */ `
         id
         userID
         postID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const followersByUserID = /* GraphQL */ `
+  query FollowersByUserID(
+    $userID: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelFollowerFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    followersByUserID(
+      userID: $userID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        userID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const followingsByUserID = /* GraphQL */ `
+  query FollowingsByUserID(
+    $userID: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelFollowingFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    followingsByUserID(
+      userID: $userID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        userID
         createdAt
         updatedAt
       }

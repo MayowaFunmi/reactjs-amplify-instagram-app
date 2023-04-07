@@ -1,6 +1,6 @@
 import React from 'react';
 import './UserProfile.css';
-import user2 from '../images/user2.jpg';
+//import user2 from '../images/user2.jpg';
 
 const UserProfile = ({ profile }) => {
   console.log('profile = ', profile);
@@ -9,13 +9,21 @@ const UserProfile = ({ profile }) => {
       {/* profile frame */}
       <div className="profile-frame">
         <div className="profile-pic">
-          <img src={user2} alt="" />
+          <img src={profile.photo} alt="" />
         </div>
         {/* profile data */}
         <div className="profile-data">
-          <h1>
-            {profile.lastName} {profile.firstName}
-          </h1>
+          <p>
+            Name: {profile.lastName} {profile.firstName}
+          </p>
+          <p>Gender: {profile.gender}</p>
+          <p>Bio: {profile.bio}</p>
+          <p>Location: {profile.location}</p>
+          <p>
+            Date Of Birth: {new Date(profile.dateOfBirth).toLocaleDateString()}
+          </p>
+          <p>Privacy: {profile.privacy}</p>
+
           <div className="profile-info" style={{ display: 'flex' }}>
             <p>40 posts</p>
             <p>50 followers</p>
