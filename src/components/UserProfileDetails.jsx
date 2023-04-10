@@ -2,14 +2,15 @@ import React, { useEffect, useState } from 'react';
 import './UserProfile.css';
 import { useParams, useNavigate } from 'react-router-dom';
 import { API, Auth, graphqlOperation } from 'aws-amplify';
-import { getUser, usersByUserId } from '../graphql/queries';
+import { getUser, postsByUserID, usersByUserId } from '../graphql/queries';
 import { createFollower, deleteFollower } from '../graphql/mutations';
 import { toast } from 'react-toastify';
 
 const UserProfileDetails = () => {
   var picLink = 'https://cdn-icons-png.flaticon.com/128/3177/3177440.png';
   const { userid } = useParams();
-  const [userDetails, setUserDetails] = useState({});
+  const [users, setUsers] = useState({});
+  const [userPost, setUserPost] = useState([]);
   const [isFollow, setIsFollow] = useState(false);
   const [follower, setFollower] = useState({});
   const notifyError = (msg) => toast.error(msg);
@@ -19,18 +20,24 @@ const UserProfileDetails = () => {
   useEffect(() => {
     const getUserDetail = async () => {
       try {
+        const post = await API.graphql(
+          graphqlOperation(postsByUserID, { userID: userid })
+        );
         const user = await API.graphql(
           graphqlOperation(usersByUserId, { userId: userid })
         );
-        setUserDetails(user.data.usersByUserId[0]);
-        console.log('users = ', user);
-        console.log('userDetails = ', userDetails);
+        setUserPost(post.data.postsByUserID.items);
+        setUsers(user.data.usersByUserId.items[0]);
+        console.log('post = ', userPost);
+        console.log('user = ', users);
+
+        //console.log('users = ', users);
       } catch (error) {
         console.log('user error = ', error);
       }
     };
     getUserDetail();
-  }, []);
+  }, [userid, userPost, users]);
 
   // to follow user
   const followUser = async () => {
@@ -75,9 +82,9 @@ const UserProfileDetails = () => {
       {/* Profile frame */}
       <div className="profile-frame">
         {/* profile-pic */}
-        {/* <div className="profile-pic">
-          <img src={userDetails.photo ? userDetails.photo : picLink} alt="" />
-        </div> */}
+        <div className="profile-pic">
+          <img src={users.photo ? users.photo : picLink} alt="" />
+        </div>
         {/* profile-data */}
         <div className="pofile-data">
           <div
@@ -87,9 +94,9 @@ const UserProfileDetails = () => {
               justifyContent: 'space-between',
             }}
           >
-            {/* <h1>
-              {userDetails.firstName} {userDetails.lastName}
-            </h1> */}
+            <h1>
+              {users.firstName} {users.lastName}
+            </h1>
             <button
               className="followBtn"
               onClick={() => {
@@ -103,21 +110,16 @@ const UserProfileDetails = () => {
               {isFollow ? 'Unfollow' : 'Follow'}
             </button>
           </div>
-          {/* <div className="profile-info" style={{ display: 'flex' }}>
-            <p>{userDetails.posts.items.length} posts</p>
-            <p>
-              {userDetails.followers.items
-                ? userDetails.followers.items.length
-                : '0'}{' '}
-              followers
+          <div className="profile-info" style={{ display: 'flex' }}>
+            <p>{userPost.length} posts</p>
+            {/* <p>
+              {users.followers ? users.followers.items.length : '0'} followers
             </p>
             <p>
-              {userDetails.following.items
-                ? userDetails.following.items.length
-                : '0'}{' '}
+              {users.following.items ? users.following.items.length : '0'}{' '}
               following
-            </p>
-          </div> */}
+            </p> */}
+          </div>
         </div>
       </div>
       <hr
@@ -129,8 +131,8 @@ const UserProfileDetails = () => {
         }}
       />
       {/* Gallery */}
-      {/* <div className="gallery">
-        {userDetails.posts.items.map((post) => {
+      <div className="gallery">
+        {userPost.map((post) => {
           return (
             <img
               key={post.id}
@@ -143,7 +145,7 @@ const UserProfileDetails = () => {
             ></img>
           );
         })}
-      </div> */}
+      </div>
     </div>
   );
 };
