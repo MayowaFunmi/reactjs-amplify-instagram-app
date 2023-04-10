@@ -14,6 +14,7 @@ import LoginContext from './context/LoginContext';
 import Modal from './components/Modal';
 import ForgotPassword from './components/ForgotPassword';
 import ChangePassword from './components/ChangePassword';
+import UserProfileDetails from './components/UserProfileDetails';
 
 const accessToken = localStorage.getItem('accessToken');
 const refreshToken = localStorage.getItem('refreshToken');
@@ -72,6 +73,10 @@ const App = () => {
               path="/create_post"
               element={<CreatePost userData={userData} />}
             />
+            <Route
+              path="/profile/:userid"
+              element={<UserProfileDetails />}
+            ></Route>
           </Routes>
 
           <ToastContainer theme="dark" />

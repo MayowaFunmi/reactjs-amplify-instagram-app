@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { API, graphqlOperation } from 'aws-amplify';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { createComment, createLike, deleteLike } from '../graphql/mutations';
 import { getPost, listUsers } from '../graphql/queries';
@@ -174,14 +174,21 @@ const Post = ({ post, sub }) => {
       <div className="card" key={post.id}>
         {/* card header */}
         <div className="card-header">
-          <div className="card-pic">
-            <img src={user1} alt="" />
-          </div>
-          <h5>
-            {user.username}
-            <span style={{ float: 'Right', color: 'Green' }}>{date}</span>
-          </h5>
+          <img src={user1} alt="" />
         </div>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <Link to={`/profile/${user.userId}`}>
+            <h5>{user.username}</h5>
+          </Link>
+          <h5>{date}</h5>
+        </div>
+
         {/* card image */}
         <div className="card-image">
           <img src={post.photo} alt="" />

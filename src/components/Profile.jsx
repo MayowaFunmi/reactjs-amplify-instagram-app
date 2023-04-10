@@ -71,7 +71,7 @@ const Profile = ({ userData }) => {
           privacy: privacy,
         },
       };
-      //console.log(userProfile);
+      console.log('userProfile = ', userProfile);
       try {
         const newUser = await API.graphql({
           query: createUser,

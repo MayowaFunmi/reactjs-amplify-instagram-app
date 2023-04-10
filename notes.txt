@@ -113,3 +113,120 @@ const getData = async () => {
     console.log('userInfo = ', userInfo);
     console.log('userSession = ', userSession);
   };
+
+  {
+    "id": "ff99dbb9-a68f-47b1-a338-be57505d7224",
+    "userId": "5c18a925-0f6e-4008-b833-9a612694f12a",
+    "username": "username2",
+    "firstName": "firstname2",
+    "lastName": "lastname2",
+    "gender": null,
+    "bio": "bio2",
+    "location": "58, Onibu-ọrẹ Area, Off Monatan Ìyànà Church Road, Monatan Ibadan",
+    "email": "akinade.mayowa@gmail.com",
+    "photo": null,
+    "dateOfBirth": null,
+    "privacy": "public",
+    "posts": {
+        "items": [
+            {
+                "id": "f240318d-13d9-4b54-9ef4-e1cea02aef22",
+                "body": "me personally",
+                "photo": "http://res.cloudinary.com/affable-digital-services/image/upload/v1680472199/ggbmkzbzpqwnaj3j2ayr.jpg",
+                "userID": "5c18a925-0f6e-4008-b833-9a612694f12a",
+                "createdAt": "2023-04-02T21:50:01.014Z",
+                "updatedAt": "2023-04-02T21:50:01.014Z"
+            },
+            {
+                "id": "7ff5fa6a-8296-461d-bc37-4d2ee3ea0900",
+                "body": "My baby's birthday",
+                "photo": "http://res.cloudinary.com/affable-digital-services/image/upload/v1679987853/vvrnzsz634dsy6tl3dfl.jpg",
+                "userID": "5c18a925-0f6e-4008-b833-9a612694f12a",
+                "createdAt": "2023-03-28T07:17:51.867Z",
+                "updatedAt": "2023-03-28T07:17:51.867Z"
+            },
+            {
+                "id": "58803a58-b9dd-4da4-86aa-35d53094eb7c",
+                "body": "a beautiful birthday",
+                "photo": "http://res.cloudinary.com/affable-digital-services/image/upload/v1680471720/sizhq3w6kfucefkxl1um.jpg",
+                "userID": "5c18a925-0f6e-4008-b833-9a612694f12a",
+                "createdAt": "2023-04-02T21:42:19.760Z",
+                "updatedAt": "2023-04-02T21:42:19.760Z"
+            }
+        ],
+        "nextToken": null
+    },
+    "comments": {
+        "items": [
+            {
+                "id": "92119d61-5ae6-4776-99ea-70075a8501db",
+                "text": "one more comment",
+                "userID": "5c18a925-0f6e-4008-b833-9a612694f12a",
+                "postID": "7ff5fa6a-8296-461d-bc37-4d2ee3ea0900",
+                "createdAt": "2023-03-31T21:42:26.928Z",
+                "updatedAt": "2023-03-31T21:42:26.928Z"
+            },
+            {
+                "id": "1868791b-d647-444c-9b3d-8e9c1dae904d",
+                "text": "What a birthday my dear daughter! Heaven's best for you baby",
+                "userID": "5c18a925-0f6e-4008-b833-9a612694f12a",
+                "postID": "7ff5fa6a-8296-461d-bc37-4d2ee3ea0900",
+                "createdAt": "2023-03-28T07:19:19.223Z",
+                "updatedAt": "2023-03-28T07:19:19.223Z"
+            },
+            {
+                "id": "c3f49d5f-4b81-4cc3-95fc-bde3c05c5160",
+                "text": "check this out too",
+                "userID": "5c18a925-0f6e-4008-b833-9a612694f12a",
+                "postID": "7ff5fa6a-8296-461d-bc37-4d2ee3ea0900",
+                "createdAt": "2023-04-01T15:54:08.256Z",
+                "updatedAt": "2023-04-01T15:54:08.256Z"
+            },
+            {
+                "id": "6da3b1d7-f4f8-4772-88e1-d57ff47c73eb",
+                "text": "one more comment",
+                "userID": "5c18a925-0f6e-4008-b833-9a612694f12a",
+                "postID": "b4f891de-5d87-4f9d-9d40-51a9d0154a82",
+                "createdAt": "2023-03-31T21:42:03.029Z",
+                "updatedAt": "2023-03-31T21:42:03.029Z"
+            }
+        ],
+        "nextToken": null
+    },
+    "followers": {
+        "items": [],
+        "nextToken": null
+    },
+    "following": {
+        "items": [],
+        "nextToken": null
+    },
+    "likes": {
+        "items": [
+            {
+                "id": "47f25ce9-beed-4856-a212-0bdfa0873202",
+                "userID": "5c18a925-0f6e-4008-b833-9a612694f12a",
+                "postID": "7ff5fa6a-8296-461d-bc37-4d2ee3ea0900",
+                "createdAt": "2023-04-02T15:09:03.188Z",
+                "updatedAt": "2023-04-02T15:09:03.188Z"
+            },
+            {
+                "id": "bc1b266e-138f-433f-b46a-c592e19f81f9",
+                "userID": "5c18a925-0f6e-4008-b833-9a612694f12a",
+                "postID": "51e3ab06-e377-446f-9e57-0d7353c12e44",
+                "createdAt": "2023-04-02T15:22:42.173Z",
+                "updatedAt": "2023-04-02T15:22:42.173Z"
+            },
+            {
+                "id": "b32b5c44-1881-4518-a9bc-a7dba96abc55",
+                "userID": "5c18a925-0f6e-4008-b833-9a612694f12a",
+                "postID": "b4f891de-5d87-4f9d-9d40-51a9d0154a82",
+                "createdAt": "2023-04-02T15:22:24.417Z",
+                "updatedAt": "2023-04-02T15:22:24.417Z"
+            }
+        ],
+        "nextToken": null
+    },
+    "createdAt": "2023-03-28T07:15:01.023Z",
+    "updatedAt": "2023-03-28T07:15:01.023Z"
+}

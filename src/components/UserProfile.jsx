@@ -4,27 +4,29 @@ import './UserProfile.css';
 
 const UserProfile = ({ profile }) => {
   console.log('profile = ', profile);
+  var picLink = 'https://cdn-icons-png.flaticon.com/128/3177/3177440.png';
+
   return (
     <div className="profile">
       {/* profile frame */}
       <div className="profile-frame">
         <div className="profile-pic">
-          <img src={profile.photo} alt="" />
+          <img src={profile.photo ? profile.photo : picLink} alt="" />
         </div>
         {/* profile data */}
         <div className="profile-data">
-          <p>
-            Name: {profile.lastName} {profile.firstName}
-          </p>
-          <p>Gender: {profile.gender}</p>
-          <p>Bio: {profile.bio}</p>
-          <p>Location: {profile.location}</p>
-          <p>
-            Date Of Birth: {new Date(profile.dateOfBirth).toLocaleDateString()}
-          </p>
-          <p>Privacy: {profile.privacy}</p>
-
+          <h1>
+            {profile.lastName} {profile.firstName}
+          </h1>
           <div className="profile-info" style={{ display: 'flex' }}>
+            <p>Gender: {profile.gender}</p>
+            <p>Bio: {profile.bio}</p>
+            <p>Location: {profile.location}</p>
+            <p>
+              Date Of Birth:{' '}
+              {new Date(profile.dateOfBirth).toLocaleDateString()}
+            </p>
+            <p>Privacy: {profile.privacy}</p>
             <p>40 posts</p>
             <p>50 followers</p>
             <p>20 following</p>
