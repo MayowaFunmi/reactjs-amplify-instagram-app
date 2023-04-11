@@ -75,7 +75,7 @@ const App = () => {
             />
             <Route
               path="/profile/:userid"
-              element={<UserProfileDetails />}
+              element={<UserProfileDetails sub={userSub} />}
             ></Route>
           </Routes>
 

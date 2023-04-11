@@ -2,16 +2,23 @@ import React, { useEffect, useState } from 'react';
 import './UserProfile.css';
 import { useParams, useNavigate } from 'react-router-dom';
 import { API, Auth, graphqlOperation } from 'aws-amplify';
-import { getUser, postsByUserID, usersByUserId } from '../graphql/queries';
+import {
+  followersByUserID,
+  getUser,
+  postsByUserID,
+  usersByUserId,
+} from '../graphql/queries';
 import { createFollower, deleteFollower } from '../graphql/mutations';
 import { toast } from 'react-toastify';
 
-const UserProfileDetails = () => {
+const UserProfileDetails = ({ sub }) => {
+  console.log('sub = ', sub);
   var picLink = 'https://cdn-icons-png.flaticon.com/128/3177/3177440.png';
   const { userid } = useParams();
   const [users, setUsers] = useState({});
+  const [userFol, setUserFol] = useState([]);
   const [userPost, setUserPost] = useState([]);
-  const [isFollow, setIsFollow] = useState(false);
+  const [isFollower, setIsFollower] = useState(false);
   const [follower, setFollower] = useState({});
   const notifyError = (msg) => toast.error(msg);
   const notifySuccess = (msg) => toast.success(msg);
@@ -26,35 +33,46 @@ const UserProfileDetails = () => {
         const user = await API.graphql(
           graphqlOperation(usersByUserId, { userId: userid })
         );
+        const userfol = await API.graphql(
+          graphqlOperation(followersByUserID, { userID: sub })
+        );
+        setUserFol(userfol.data.followersByUserID.items);
         setUserPost(post.data.postsByUserID.items);
         setUsers(user.data.usersByUserId.items[0]);
         console.log('post = ', userPost);
         console.log('user = ', users);
-
+        console.log('userFol = ', userfol);
+        // loop through the userFol to check if current user already following the user being checked
+        for (let i = 0; i < userFol.length; i++) {
+          if (userFol[i].userID === sub) {
+            setFollower(userFol[i]);
+            setIsFollower(true);
+            console.log('userFol[i] = ', userFol[i]);
+            break;
+          }
+        }
         //console.log('users = ', users);
       } catch (error) {
         console.log('user error = ', error);
       }
     };
     getUserDetail();
-  }, [userid, userPost, users]);
+  }, [userid, userPost, users, sub, userFol]);
 
   // to follow user
   const followUser = async () => {
-    const authenticated_user = await Auth.currentAuthenticatedUser(); // username, other attributes - email, sub
-    const id = authenticated_user.attributes.sub;
     const followerParams = {
-      input: { userID: id },
+      input: { userID: sub },
     };
     try {
       const follow = await API.graphql(
         graphqlOperation(createFollower, followerParams)
       );
-      setIsFollow(true);
-      setFollower(follow.data.createFollower);
-      notifySuccess('You are followingfollow this user!');
+      //setFollower(follow.data.createFollower);
+      setIsFollower(true);
+      notifySuccess('You are following this user!');
       console.log('follow = ', follow);
-      console.log('follower = ', follower);
+      //console.log('follower = ', follower);
     } catch (error) {
       console.log('error = ', error);
       notifyError(error);
@@ -69,7 +87,7 @@ const UserProfileDetails = () => {
     };
     try {
       await API.graphql(graphqlOperation(deleteFollower, unfollowerParams));
-      setIsFollow(false);
+      setIsFollower(false);
       notifySuccess('You unfollow this user!');
     } catch (error) {
       console.log('error = ', error);
@@ -97,7 +115,17 @@ const UserProfileDetails = () => {
             <h1>
               {users.firstName} {users.lastName}
             </h1>
-            <button
+            {/* if userid in userFol, show unfollow, else show follow */}
+            {isFollower ? (
+              <button className="followBtn" onClick={() => unFollowUser()}>
+                Unfollow
+              </button>
+            ) : (
+              <button className="followBtn" onClick={() => followUser()}>
+                Follow
+              </button>
+            )}
+            {/* <button
               className="followBtn"
               onClick={() => {
                 if (isFollow) {
@@ -108,7 +136,7 @@ const UserProfileDetails = () => {
               }}
             >
               {isFollow ? 'Unfollow' : 'Follow'}
-            </button>
+            </button> */}
           </div>
           <div className="profile-info" style={{ display: 'flex' }}>
             <p>{userPost.length} posts</p>
