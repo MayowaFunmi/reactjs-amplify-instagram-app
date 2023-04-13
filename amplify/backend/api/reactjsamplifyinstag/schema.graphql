@@ -33,6 +33,7 @@ type Post @model {
   comments: [Comment] @hasMany(indexName: "byPost", fields: ["id"])
   userID: String! @index(name: "userPost")
   likes: [Like] @hasMany(indexName: "postLikes", fields: ["id"])
+  tags: [Tag] @manyToMany(relationName: "PostTags")
 }
 
 type Comment @model {
@@ -50,13 +51,22 @@ type Like @model {
 
 type Follower @model {
   id: ID!
-  userID: String @index(name: "userFollower")
+  owner: String @index(name: "userFollower")
+  userID: String
 }
 
 type Following @model {
   id: ID!
-  userID: String @index(name: "userFollowing")
+  owner: String @index(name: "userFollowing")
+  userID: String
 }
+
+type Tag @model {
+  id: ID!
+  label: String!
+  posts: [Post] @manyToMany(relationName: "PostTags")
+}
+
 # type Blog @model {
 #   id: ID!
 #   name: String!

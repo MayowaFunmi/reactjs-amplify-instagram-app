@@ -98,7 +98,7 @@ const Post = ({ post, sub }) => {
 
     timeAgo(post.createdAt);
     getComments(postId);
-    userDetails(postWithComment.userID);
+    userDetails(postWithComment.userID); // owner of the post
     //setShow(false);
   }, [post, postId, postComment, postWithComment, sub]);
 
@@ -174,19 +174,18 @@ const Post = ({ post, sub }) => {
       <div className="card" key={post.id}>
         {/* card header */}
         <div className="card-header">
-          <img src={user1} alt="" />
+          <img src={user.photo} alt="" />
         </div>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
-          <Link to={`/profile/${user.userId}`}>
+        <div>
+          {sub === user.userId ? (
+            <Link to="/profile">
             <h5>{user.username}</h5>
           </Link>
-          <h5>{date}</h5>
+          ) : (
+            <Link to={`/profile/${user.userId}`}>
+            <h5>{user.username}</h5>
+          </Link>
+          )}
         </div>
 
         {/* card image */}
@@ -248,6 +247,7 @@ const Post = ({ post, sub }) => {
           </p>
         )}
         {/* card content */}
+        <h5>{date}</h5>
 
         {/* comment */}
         <div className="add-comment">

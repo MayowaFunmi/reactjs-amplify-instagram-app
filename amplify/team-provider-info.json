@@ -1,22 +1,22 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-instagram-dev-12633-authRole",
-      "UnauthRoleArn": "arn:aws:iam::145821680207:role/amplify-instagram-dev-12633-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::145821680207:role/amplify-instagram-dev-12633-authRole",
+      "AuthRoleName": "amplify-reactjsamplifyinstag-dev-235336-authRole",
+      "UnauthRoleArn": "arn:aws:iam::145821680207:role/amplify-reactjsamplifyinstag-dev-235336-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::145821680207:role/amplify-reactjsamplifyinstag-dev-235336-authRole",
       "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-instagram-dev-12633-deployment",
-      "UnauthRoleName": "amplify-instagram-dev-12633-unauthRole",
-      "StackName": "amplify-instagram-dev-12633",
-      "StackId": "arn:aws:cloudformation:us-east-1:145821680207:stack/amplify-instagram-dev-12633/104b1610-cc36-11ed-87a5-0a12c4c48f3f",
-      "AmplifyAppId": "d335fi2m9t8o2z"
+      "DeploymentBucketName": "amplify-reactjsamplifyinstag-dev-235336-deployment",
+      "UnauthRoleName": "amplify-reactjsamplifyinstag-dev-235336-unauthRole",
+      "StackName": "amplify-reactjsamplifyinstag-dev-235336",
+      "StackId": "arn:aws:cloudformation:us-east-1:145821680207:stack/amplify-reactjsamplifyinstag-dev-235336/eb0f91d0-d984-11ed-ad45-1262ff399981",
+      "AmplifyAppId": "d3gux6xi4mq2bj"
     },
     "categories": {
       "auth": {
-        "instagramecdc04ac": {}
+        "reactjsamplifyinstag9981a9a8": {}
       },
       "api": {
-        "instagram": {}
+        "reactjsamplifyinstag": {}
       }
     }
   }

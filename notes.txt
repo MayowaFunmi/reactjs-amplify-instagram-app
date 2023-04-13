@@ -230,3 +230,5 @@ const getData = async () => {
     "createdAt": "2023-03-28T07:15:01.023Z",
     "updatedAt": "2023-03-28T07:15:01.023Z"
 }
+
+Server=localhost;Database=master;Trusted_Connection=True;

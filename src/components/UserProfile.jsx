@@ -1,10 +1,39 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './UserProfile.css';
-//import user2 from '../images/user2.jpg';
+import { API, graphqlOperation } from 'aws-amplify';
+import { followersByOwner, listFollowers, postsByUserID } from '../graphql/queries';
 
 const UserProfile = ({ profile }) => {
-  console.log('profile = ', profile);
   var picLink = 'https://cdn-icons-png.flaticon.com/128/3177/3177440.png';
+  const [follow, setFollow] = useState(0);
+  const [following, setFollowing] = useState(0);
+  const [userPost, setUserPost] = useState([])
+
+  useEffect(() => {
+    const getPosts = async() => {
+      const posts = await API.graphql(graphqlOperation(postsByUserID, {userID: profile.userId}))
+      setUserPost(posts.data.postsByUserID.items);
+    }
+    const getfollowers = async () => {
+      const followers = await API.graphql(graphqlOperation(followersByOwner, {owner: profile.userId}))
+      setFollow(followers.data.followersByOwner.items.length)
+    }
+  
+    const getfollowings = async () => {
+      const all_follows = await API.graphql(graphqlOperation(listFollowers))
+      const all = all_follows.data.listFollowers.items
+      var f = []
+      for (let i=0; i<all.length; i++) {
+        if (all[i].userID === profile.userId) {
+          f.push(all[i])
+        }
+      }
+      setFollowing(f.length)
+    }
+    getfollowers()
+    getfollowings()
+    getPosts()
+  }, [])
 
   return (
     <div className="profile">
@@ -19,24 +48,37 @@ const UserProfile = ({ profile }) => {
             {profile.lastName} {profile.firstName}
           </h1>
           <div className="profile-info" style={{ display: 'flex' }}>
-            <p>Gender: {profile.gender}</p>
-            <p>Bio: {profile.bio}</p>
-            <p>Location: {profile.location}</p>
+            <p><strong>Gender: {profile.gender}</strong></p>
+            <p><strong>Bio: {profile.bio}</strong></p>
+            <p><strong>Location: {profile.location}</strong></p>
             <p>
-              Date Of Birth:{' '}
-              {new Date(profile.dateOfBirth).toLocaleDateString()}
+             <strong> Date Of Birth:
+              {new Date(profile.dateOfBirth).toLocaleDateString()}</strong>
             </p>
-            <p>Privacy: {profile.privacy}</p>
-            <p>40 posts</p>
-            <p>50 followers</p>
-            <p>20 following</p>
+            <p><strong>Privacy: {profile.privacy}</strong></p>
+            <p><strong>{userPost.length} posts</strong></p>
+            <p><strong>{follow} followers</strong></p>
+            <p><strong>{following} following</strong></p>
           </div>
         </div>
       </div>
       <hr style={{ width: '90%', margin: '25px auto', opacity: '0.8' }} />
       {/* Gallery */}
-      <div className="gallery">show gallery pics here :::</div>
-      {/* {show && <PostDetail item={post} toggleDetails={toggleDetails} />} */}
+      <div className="gallery">
+        {userPost.map((post) => {
+          return (
+            <img
+              key={post.id}
+              src={post.photo}
+              // onClick={() => {
+              //     toggleDetails(pics)
+              // }}
+              className="item"
+              alt=""
+            ></img>
+          );
+        })}
+      </div>
     </div>
   );
 };

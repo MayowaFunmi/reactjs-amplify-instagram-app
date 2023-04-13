@@ -34,60 +34,65 @@ const Profile = ({ userData }) => {
   }, []);
 
   // posting image to cloudinary
-  const postDp = () => {
-    const data = new FormData();
-    data.append('file', image);
-    data.append('upload_preset', 'instagram-clone');
-    data.append('cloud_name', 'affable-digital-services');
-    fetch(
-      'https://api.cloudinary.com/v1_1/affable-digital-services/image/upload',
-      {
-        method: 'post',
-        body: data,
+  const postDp = async () => {
+    try {
+      const data = new FormData();
+      data.append('file', image);
+      data.append('upload_preset', 'instagram-clone');
+      data.append('cloud_name', 'affable-digital-services');
+  
+      const response = await fetch(
+        'https://api.cloudinary.com/v1_1/affable-digital-services/image/upload',
+        {
+          method: 'POST',
+          body: data,
+        }
+      );
+  
+      if (!response.ok) {
+        throw new Error('Failed to upload image');
       }
-    )
-      .then((res) => res.json())
-      .then((data) => setUrl(data.url))
-      .catch((err) => console.log(err));
-    handleProfile();
-  };
-
-  const handleProfile = async () => {
-    if (auth.status === false) {
-      const authenticated_user = await Auth.currentAuthenticatedUser(); // username, other attributes - email, sub
-
-      const userProfile = {
-        input: {
-          userId: authenticated_user.attributes.sub,
-          username: authenticated_user.username,
-          firstName: firstName,
-          lastName: lastName,
-          gender: gender,
-          bio: bio,
-          location: location,
-          email: email,
-          photo: url,
-          dateOfBirth: dateOfBirth,
-          privacy: privacy,
-        },
-      };
-      console.log('userProfile = ', userProfile);
-      try {
-        const newUser = await API.graphql({
-          query: createUser,
-          variables: userProfile,
-        });
-        //console.log('auth user = ', newAuthUser);
-        console.log('new user = ', newUser);
-        notifySuccess('User Created Successfully!!');
-        navigate('/');
-      } catch (error) {
-        console.log('error = ', error);
-        notifyError(error);
+  
+      const responseData = await response.json();
+      //setUrl(responseData.url);
+      if (auth.status === false) {
+        const authenticated_user = await Auth.currentAuthenticatedUser(); // username, other attributes - email, sub
+  
+        const userProfile = {
+          input: {
+            userId: authenticated_user.attributes.sub,
+            username: authenticated_user.username,
+            firstName: firstName,
+            lastName: lastName,
+            gender: gender,
+            bio: bio,
+            location: location,
+            email: email,
+            photo: responseData.url,
+            dateOfBirth: dateOfBirth,
+            privacy: privacy,
+          },
+        };
+        console.log('userProfile = ', userProfile);
+        try {
+          const newUser = await API.graphql({
+            query: createUser,
+            variables: userProfile,
+          });
+          //console.log('auth user = ', newAuthUser);
+          console.log('new user = ', newUser);
+          notifySuccess('User Created Successfully!!');
+          navigate('/');
+        } catch (error) {
+          console.log('error = ', error);
+          notifyError(error);
+        }
+      } else {
+        notifyError('User not found on users list');
+        //navigate('/signin');
       }
-    } else {
-      notifyError('User not found on users list');
-      //navigate('/signin');
+    } catch (error) {
+      console.error('Error uploading image:', error);
     }
   };
 

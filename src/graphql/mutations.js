@@ -44,6 +44,7 @@ export const createUser = /* GraphQL */ `
       followers {
         items {
           id
+          owner
           userID
           createdAt
           updatedAt
@@ -53,6 +54,7 @@ export const createUser = /* GraphQL */ `
       following {
         items {
           id
+          owner
           userID
           createdAt
           updatedAt
@@ -117,6 +119,7 @@ export const updateUser = /* GraphQL */ `
       followers {
         items {
           id
+          owner
           userID
           createdAt
           updatedAt
@@ -126,6 +129,7 @@ export const updateUser = /* GraphQL */ `
       following {
         items {
           id
+          owner
           userID
           createdAt
           updatedAt
@@ -190,6 +194,7 @@ export const deleteUser = /* GraphQL */ `
       followers {
         items {
           id
+          owner
           userID
           createdAt
           updatedAt
@@ -199,6 +204,7 @@ export const deleteUser = /* GraphQL */ `
       following {
         items {
           id
+          owner
           userID
           createdAt
           updatedAt
@@ -422,6 +428,7 @@ export const createFollower = /* GraphQL */ `
   ) {
     createFollower(input: $input, condition: $condition) {
       id
+      owner
       userID
       createdAt
       updatedAt
@@ -435,6 +442,7 @@ export const updateFollower = /* GraphQL */ `
   ) {
     updateFollower(input: $input, condition: $condition) {
       id
+      owner
       userID
       createdAt
       updatedAt
@@ -448,6 +456,7 @@ export const deleteFollower = /* GraphQL */ `
   ) {
     deleteFollower(input: $input, condition: $condition) {
       id
+      owner
       userID
       createdAt
       updatedAt
@@ -461,6 +470,7 @@ export const createFollowing = /* GraphQL */ `
   ) {
     createFollowing(input: $input, condition: $condition) {
       id
+      owner
       userID
       createdAt
       updatedAt
@@ -474,6 +484,7 @@ export const updateFollowing = /* GraphQL */ `
   ) {
     updateFollowing(input: $input, condition: $condition) {
       id
+      owner
       userID
       createdAt
       updatedAt
@@ -487,6 +498,7 @@ export const deleteFollowing = /* GraphQL */ `
   ) {
     deleteFollowing(input: $input, condition: $condition) {
       id
+      owner
       userID
       createdAt
       updatedAt

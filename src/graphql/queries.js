@@ -41,6 +41,7 @@ export const getUser = /* GraphQL */ `
       followers {
         items {
           id
+          owner
           userID
           createdAt
           updatedAt
@@ -50,6 +51,7 @@ export const getUser = /* GraphQL */ `
       following {
         items {
           id
+          owner
           userID
           createdAt
           updatedAt
@@ -235,6 +237,7 @@ export const getFollower = /* GraphQL */ `
   query GetFollower($id: ID!) {
     getFollower(id: $id) {
       id
+      owner
       userID
       createdAt
       updatedAt
@@ -250,6 +253,7 @@ export const listFollowers = /* GraphQL */ `
     listFollowers(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        owner
         userID
         createdAt
         updatedAt
@@ -262,6 +266,7 @@ export const getFollowing = /* GraphQL */ `
   query GetFollowing($id: ID!) {
     getFollowing(id: $id) {
       id
+      owner
       userID
       createdAt
       updatedAt
@@ -277,6 +282,7 @@ export const listFollowings = /* GraphQL */ `
     listFollowings(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        owner
         userID
         createdAt
         updatedAt
@@ -474,16 +480,16 @@ export const likesByPostID = /* GraphQL */ `
     }
   }
 `;
-export const followersByUserID = /* GraphQL */ `
-  query FollowersByUserID(
-    $userID: String!
+export const followersByOwner = /* GraphQL */ `
+  query FollowersByOwner(
+    $owner: String!
     $sortDirection: ModelSortDirection
     $filter: ModelFollowerFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    followersByUserID(
-      userID: $userID
+    followersByOwner(
+      owner: $owner
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -491,6 +497,7 @@ export const followersByUserID = /* GraphQL */ `
     ) {
       items {
         id
+        owner
         userID
         createdAt
         updatedAt
@@ -499,16 +506,16 @@ export const followersByUserID = /* GraphQL */ `
     }
   }
 `;
-export const followingsByUserID = /* GraphQL */ `
-  query FollowingsByUserID(
-    $userID: String!
+export const followingsByOwner = /* GraphQL */ `
+  query FollowingsByOwner(
+    $owner: String!
     $sortDirection: ModelSortDirection
     $filter: ModelFollowingFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    followingsByUserID(
-      userID: $userID
+    followingsByOwner(
+      owner: $owner
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -516,6 +523,7 @@ export const followingsByUserID = /* GraphQL */ `
     ) {
       items {
         id
+        owner
         userID
         createdAt
         updatedAt

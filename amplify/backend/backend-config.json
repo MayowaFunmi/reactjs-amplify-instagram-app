@@ -1,6 +1,6 @@
 {
   "api": {
-    "instagram": {
+    "reactjsamplifyinstag": {
       "dependsOn": [],
       "output": {
         "authConfig": {
@@ -18,7 +18,7 @@
     }
   },
   "auth": {
-    "instagramecdc04ac": {
+    "reactjsamplifyinstag9981a9a8": {
       "customAuth": false,
       "dependsOn": [],
       "frontendAuthConfig": {

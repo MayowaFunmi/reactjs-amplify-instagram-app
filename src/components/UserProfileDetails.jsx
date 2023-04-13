@@ -3,7 +3,7 @@ import './UserProfile.css';
 import { useParams, useNavigate } from 'react-router-dom';
 import { API, Auth, graphqlOperation } from 'aws-amplify';
 import {
-  followersByUserID,
+  followersByOwner,
   getUser,
   postsByUserID,
   usersByUserId,
@@ -34,9 +34,9 @@ const UserProfileDetails = ({ sub }) => {
           graphqlOperation(usersByUserId, { userId: userid })
         );
         const userfol = await API.graphql(
-          graphqlOperation(followersByUserID, { userID: sub })
+          graphqlOperation(followersByOwner, { owner: userid })
         );
-        setUserFol(userfol.data.followersByUserID.items);
+        setUserFol(userfol.data.followersByOwner.items);
         setUserPost(post.data.postsByUserID.items);
         setUsers(user.data.usersByUserId.items[0]);
         console.log('post = ', userPost);
@@ -62,7 +62,7 @@ const UserProfileDetails = ({ sub }) => {
   // to follow user
   const followUser = async () => {
     const followerParams = {
-      input: { userID: sub },
+      input: { owner: userid, userID: sub },
     };
     try {
       const follow = await API.graphql(
@@ -116,6 +116,7 @@ const UserProfileDetails = ({ sub }) => {
               {users.firstName} {users.lastName}
             </h1>
             {/* if userid in userFol, show unfollow, else show follow */}
+            <p>{userFol.length} followers</p>
             {isFollower ? (
               <button className="followBtn" onClick={() => unFollowUser()}>
                 Unfollow

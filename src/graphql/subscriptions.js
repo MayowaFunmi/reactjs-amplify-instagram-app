@@ -41,6 +41,7 @@ export const onCreateUser = /* GraphQL */ `
       followers {
         items {
           id
+          owner
           userID
           createdAt
           updatedAt
@@ -50,6 +51,7 @@ export const onCreateUser = /* GraphQL */ `
       following {
         items {
           id
+          owner
           userID
           createdAt
           updatedAt
@@ -111,6 +113,7 @@ export const onUpdateUser = /* GraphQL */ `
       followers {
         items {
           id
+          owner
           userID
           createdAt
           updatedAt
@@ -120,6 +123,7 @@ export const onUpdateUser = /* GraphQL */ `
       following {
         items {
           id
+          owner
           userID
           createdAt
           updatedAt
@@ -181,6 +185,7 @@ export const onDeleteUser = /* GraphQL */ `
       followers {
         items {
           id
+          owner
           userID
           createdAt
           updatedAt
@@ -190,6 +195,7 @@ export const onDeleteUser = /* GraphQL */ `
       following {
         items {
           id
+          owner
           userID
           createdAt
           updatedAt
@@ -383,6 +389,7 @@ export const onCreateFollower = /* GraphQL */ `
   subscription OnCreateFollower($filter: ModelSubscriptionFollowerFilterInput) {
     onCreateFollower(filter: $filter) {
       id
+      owner
       userID
       createdAt
       updatedAt
@@ -393,6 +400,7 @@ export const onUpdateFollower = /* GraphQL */ `
   subscription OnUpdateFollower($filter: ModelSubscriptionFollowerFilterInput) {
     onUpdateFollower(filter: $filter) {
       id
+      owner
       userID
       createdAt
       updatedAt
@@ -403,6 +411,7 @@ export const onDeleteFollower = /* GraphQL */ `
   subscription OnDeleteFollower($filter: ModelSubscriptionFollowerFilterInput) {
     onDeleteFollower(filter: $filter) {
       id
+      owner
       userID
       createdAt
       updatedAt
@@ -415,6 +424,7 @@ export const onCreateFollowing = /* GraphQL */ `
   ) {
     onCreateFollowing(filter: $filter) {
       id
+      owner
       userID
       createdAt
       updatedAt
@@ -427,6 +437,7 @@ export const onUpdateFollowing = /* GraphQL */ `
   ) {
     onUpdateFollowing(filter: $filter) {
       id
+      owner
       userID
       createdAt
       updatedAt
@@ -439,6 +450,7 @@ export const onDeleteFollowing = /* GraphQL */ `
   ) {
     onDeleteFollowing(filter: $filter) {
       id
+      owner
       userID
       createdAt
       updatedAt
