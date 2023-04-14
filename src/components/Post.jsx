@@ -174,20 +174,23 @@ const Post = ({ post, sub }) => {
       <div className="card" key={post.id}>
         {/* card header */}
         <div className="card-header">
-          <img src={user.photo} alt="" />
-        </div>
-        <div>
+          <div className="card-pic">
+            <img src={user.photo} alt="" />
+          </div>
           {sub === user.userId ? (
-            <Link to="/profile">
-            <h5>{user.username}</h5>
-          </Link>
+            <h5>
+              <Link to="/profile">
+                {user.username}
+              </Link>
+            </h5>
           ) : (
-            <Link to={`/profile/${user.userId}`}>
-            <h5>{user.username}</h5>
-          </Link>
+            <h5>
+              <Link to={`/profile/${user.userId}`}>
+                {user.username}
+              </Link>
+            </h5>
           )}
         </div>
-
         {/* card image */}
         <div className="card-image">
           <img src={post.photo} alt="" />

@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
-import user3 from '../images/user3.jpg';
+//import user3 from '../images/user3.jpg';
 import './CreatePost.css';
 import imageIcon from '../images/image_icon.png';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { API, graphqlOperation } from 'aws-amplify';
-import { createPost } from '../graphql/mutations';
+import { createPost, createPostTags, createTag } from '../graphql/mutations';
 import LoginContext from '../context/LoginContext';
 
 const CreatePost = ({ userData }) => {
@@ -13,10 +13,30 @@ const CreatePost = ({ userData }) => {
   const [image, setImage] = useState('');
   const [body, setBody] = useState('');
   const [url, setUrl] = useState('');
+  const [tagLabels, setTagLabels] = useState('')
+  const [tagRes, setTagRes] = useState([])
+  const [postNew, setPostNew] = useState({})
+  const [postTag, setPostTag] = useState({})
+
   const navigate = useNavigate();
   const auth = useContext(LoginContext);
   //console.log('status = ', auth.status);
   const sendPost = async () => {
+    // create tag
+    // if (tagLabels) {
+    //   //get each tag one by one
+    //   const tagArr = tagLabels.split(",").map((word) => word.trim())
+    //   var res = []
+    //   for (let i=0; i<tagArr.length; i++) {
+    //     const tagParams = {
+    //       input: {label: tagArr[i]}
+    //     }
+    //     let tagResult = await API.graphql(graphqlOperation(createTag, tagParams))
+    //     res.push(tagResult.data.createTag)
+    //   }
+    //   setTagRes(res)
+    // }
+     
     if (url) {
       // saving post to AWS AppSync
       const newPost = {
@@ -26,20 +46,41 @@ const CreatePost = ({ userData }) => {
       };
       //console.log('new post data =', newPost);
       try {
-        // const post = await API.graphql({
-        //   query: createPost,
-        //   variables: newPost,
-        // });
         const post = await API.graphql(
           graphqlOperation(createPost, { input: newPost })
         );
         //console.log('new post: ', post);
+        setPostNew(post.data.createPost)
         notifySuccess('Post Created Successfully');
         navigate('/');
       } catch (error) {
         console.log('error = ', error);
         notifyError(error);
       }
+    }
+
+    if (tagLabels) {
+      const tagLabelsArray = tagLabels.split(',').map((tagLabel) => tagLabel.trim());
+
+      // create new tags
+      const tags = await Promise.all(tagLabelsArray.map(async (tagLabel) => {
+        const createTagInput = {
+          label: tagLabel
+        }
+        const newTag = await API.graphql(graphqlOperation(createTag, { input: createTagInput }))
+        return newTag.data.createTag
+      }));
+
+    // Finally, link the tags to the post
+      const postTags = await Promise.all(tags.map(async (tag) => {
+        const createPostTagInput = {
+          postId: postNew.id,
+          tagId: tag.id
+        }
+        const newPostTag = await API.graphql(graphqlOperation(createPostTags, { input: createPostTagInput}))
+        setPostTag(newPostTag.data.createPostTags)
+      }))
+      console.log('New Post with tags:', { ...postNew, tags: postTags });
     }
   };
 
@@ -111,7 +152,7 @@ const CreatePost = ({ userData }) => {
       <div className="details">
         <div className="card-header">
           <div className="card-pic">
-            <img src={user3} alt="" id="output" />
+            <img src={userData.photo} alt="" id="output" />
           </div>
           <h5>
             {userData.firstName} {userData.lastName}
@@ -127,6 +168,7 @@ const CreatePost = ({ userData }) => {
             setBody(e.target.value);
           }}
         ></textarea>
+        <input type="text" value={tagLabels} onChange={(e) => setTagLabels(e.target.value)} placeholder='Add Tag(s), separate each tag using comma ","' />
       </div>
     </div>
   );

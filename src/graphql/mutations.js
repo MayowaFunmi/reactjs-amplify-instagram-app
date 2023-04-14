@@ -257,6 +257,16 @@ export const createPost = /* GraphQL */ `
         }
         nextToken
       }
+      tags {
+        items {
+          id
+          postId
+          tagId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -293,6 +303,16 @@ export const updatePost = /* GraphQL */ `
         }
         nextToken
       }
+      tags {
+        items {
+          id
+          postId
+          tagId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -324,6 +344,16 @@ export const deletePost = /* GraphQL */ `
           id
           userID
           postID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      tags {
+        items {
+          id
+          postId
+          tagId
           createdAt
           updatedAt
         }
@@ -500,6 +530,195 @@ export const deleteFollowing = /* GraphQL */ `
       id
       owner
       userID
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createTag = /* GraphQL */ `
+  mutation CreateTag(
+    $input: CreateTagInput!
+    $condition: ModelTagConditionInput
+  ) {
+    createTag(input: $input, condition: $condition) {
+      id
+      label
+      posts {
+        items {
+          id
+          postId
+          tagId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateTag = /* GraphQL */ `
+  mutation UpdateTag(
+    $input: UpdateTagInput!
+    $condition: ModelTagConditionInput
+  ) {
+    updateTag(input: $input, condition: $condition) {
+      id
+      label
+      posts {
+        items {
+          id
+          postId
+          tagId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteTag = /* GraphQL */ `
+  mutation DeleteTag(
+    $input: DeleteTagInput!
+    $condition: ModelTagConditionInput
+  ) {
+    deleteTag(input: $input, condition: $condition) {
+      id
+      label
+      posts {
+        items {
+          id
+          postId
+          tagId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createPostTags = /* GraphQL */ `
+  mutation CreatePostTags(
+    $input: CreatePostTagsInput!
+    $condition: ModelPostTagsConditionInput
+  ) {
+    createPostTags(input: $input, condition: $condition) {
+      id
+      postId
+      tagId
+      post {
+        id
+        body
+        photo
+        comments {
+          nextToken
+        }
+        userID
+        likes {
+          nextToken
+        }
+        tags {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      tag {
+        id
+        label
+        posts {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updatePostTags = /* GraphQL */ `
+  mutation UpdatePostTags(
+    $input: UpdatePostTagsInput!
+    $condition: ModelPostTagsConditionInput
+  ) {
+    updatePostTags(input: $input, condition: $condition) {
+      id
+      postId
+      tagId
+      post {
+        id
+        body
+        photo
+        comments {
+          nextToken
+        }
+        userID
+        likes {
+          nextToken
+        }
+        tags {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      tag {
+        id
+        label
+        posts {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deletePostTags = /* GraphQL */ `
+  mutation DeletePostTags(
+    $input: DeletePostTagsInput!
+    $condition: ModelPostTagsConditionInput
+  ) {
+    deletePostTags(input: $input, condition: $condition) {
+      id
+      postId
+      tagId
+      post {
+        id
+        body
+        photo
+        comments {
+          nextToken
+        }
+        userID
+        likes {
+          nextToken
+        }
+        tags {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      tag {
+        id
+        label
+        posts {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }

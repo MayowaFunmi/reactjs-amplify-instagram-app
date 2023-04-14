@@ -1,19 +1,19 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-reactjsamplifyinstag-dev-235336-authRole",
-      "UnauthRoleArn": "arn:aws:iam::145821680207:role/amplify-reactjsamplifyinstag-dev-235336-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::145821680207:role/amplify-reactjsamplifyinstag-dev-235336-authRole",
+      "AuthRoleName": "amplify-reactjsamplifyinstag-dev-121110-authRole",
+      "UnauthRoleArn": "arn:aws:iam::145821680207:role/amplify-reactjsamplifyinstag-dev-121110-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::145821680207:role/amplify-reactjsamplifyinstag-dev-121110-authRole",
       "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-reactjsamplifyinstag-dev-235336-deployment",
-      "UnauthRoleName": "amplify-reactjsamplifyinstag-dev-235336-unauthRole",
-      "StackName": "amplify-reactjsamplifyinstag-dev-235336",
-      "StackId": "arn:aws:cloudformation:us-east-1:145821680207:stack/amplify-reactjsamplifyinstag-dev-235336/eb0f91d0-d984-11ed-ad45-1262ff399981",
-      "AmplifyAppId": "d3gux6xi4mq2bj"
+      "DeploymentBucketName": "amplify-reactjsamplifyinstag-dev-121110-deployment",
+      "UnauthRoleName": "amplify-reactjsamplifyinstag-dev-121110-unauthRole",
+      "StackName": "amplify-reactjsamplifyinstag-dev-121110",
+      "StackId": "arn:aws:cloudformation:us-east-1:145821680207:stack/amplify-reactjsamplifyinstag-dev-121110/201b28e0-dab5-11ed-aba9-0a67de2f0c6b",
+      "AmplifyAppId": "d1id9wqvoclnlo"
     },
     "categories": {
       "auth": {
-        "reactjsamplifyinstag9981a9a8": {}
+        "reactjsamplifyinstag4a9a124d": {}
       },
       "api": {
         "reactjsamplifyinstag": {}

@@ -143,6 +143,16 @@ export const getPost = /* GraphQL */ `
         }
         nextToken
       }
+      tags {
+        items {
+          id
+          postId
+          tagId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -164,6 +174,9 @@ export const listPosts = /* GraphQL */ `
         }
         userID
         likes {
+          nextToken
+        }
+        tags {
           nextToken
         }
         createdAt
@@ -291,6 +304,115 @@ export const listFollowings = /* GraphQL */ `
     }
   }
 `;
+export const getTag = /* GraphQL */ `
+  query GetTag($id: ID!) {
+    getTag(id: $id) {
+      id
+      label
+      posts {
+        items {
+          id
+          postId
+          tagId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listTags = /* GraphQL */ `
+  query ListTags(
+    $filter: ModelTagFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listTags(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        label
+        posts {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getPostTags = /* GraphQL */ `
+  query GetPostTags($id: ID!) {
+    getPostTags(id: $id) {
+      id
+      postId
+      tagId
+      post {
+        id
+        body
+        photo
+        comments {
+          nextToken
+        }
+        userID
+        likes {
+          nextToken
+        }
+        tags {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      tag {
+        id
+        label
+        posts {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listPostTags = /* GraphQL */ `
+  query ListPostTags(
+    $filter: ModelPostTagsFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPostTags(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        postId
+        tagId
+        post {
+          id
+          body
+          photo
+          userID
+          createdAt
+          updatedAt
+        }
+        tag {
+          id
+          label
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const usersByUserId = /* GraphQL */ `
   query UsersByUserId(
     $userId: String!
@@ -365,6 +487,9 @@ export const postsByUserID = /* GraphQL */ `
         }
         userID
         likes {
+          nextToken
+        }
+        tags {
           nextToken
         }
         createdAt
@@ -525,6 +650,86 @@ export const followingsByOwner = /* GraphQL */ `
         id
         owner
         userID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const postTagsByPostId = /* GraphQL */ `
+  query PostTagsByPostId(
+    $postId: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelPostTagsFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    postTagsByPostId(
+      postId: $postId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        postId
+        tagId
+        post {
+          id
+          body
+          photo
+          userID
+          createdAt
+          updatedAt
+        }
+        tag {
+          id
+          label
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const postTagsByTagId = /* GraphQL */ `
+  query PostTagsByTagId(
+    $tagId: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelPostTagsFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    postTagsByTagId(
+      tagId: $tagId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        postId
+        tagId
+        post {
+          id
+          body
+          photo
+          userID
+          createdAt
+          updatedAt
+        }
+        tag {
+          id
+          label
+          createdAt
+          updatedAt
+        }
         createdAt
         updatedAt
       }

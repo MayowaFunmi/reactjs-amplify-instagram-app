@@ -245,6 +245,16 @@ export const onCreatePost = /* GraphQL */ `
         }
         nextToken
       }
+      tags {
+        items {
+          id
+          postId
+          tagId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -278,6 +288,16 @@ export const onUpdatePost = /* GraphQL */ `
         }
         nextToken
       }
+      tags {
+        items {
+          id
+          postId
+          tagId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -306,6 +326,16 @@ export const onDeletePost = /* GraphQL */ `
           id
           userID
           postID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      tags {
+        items {
+          id
+          postId
+          tagId
           createdAt
           updatedAt
         }
@@ -452,6 +482,177 @@ export const onDeleteFollowing = /* GraphQL */ `
       id
       owner
       userID
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateTag = /* GraphQL */ `
+  subscription OnCreateTag($filter: ModelSubscriptionTagFilterInput) {
+    onCreateTag(filter: $filter) {
+      id
+      label
+      posts {
+        items {
+          id
+          postId
+          tagId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateTag = /* GraphQL */ `
+  subscription OnUpdateTag($filter: ModelSubscriptionTagFilterInput) {
+    onUpdateTag(filter: $filter) {
+      id
+      label
+      posts {
+        items {
+          id
+          postId
+          tagId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteTag = /* GraphQL */ `
+  subscription OnDeleteTag($filter: ModelSubscriptionTagFilterInput) {
+    onDeleteTag(filter: $filter) {
+      id
+      label
+      posts {
+        items {
+          id
+          postId
+          tagId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreatePostTags = /* GraphQL */ `
+  subscription OnCreatePostTags($filter: ModelSubscriptionPostTagsFilterInput) {
+    onCreatePostTags(filter: $filter) {
+      id
+      postId
+      tagId
+      post {
+        id
+        body
+        photo
+        comments {
+          nextToken
+        }
+        userID
+        likes {
+          nextToken
+        }
+        tags {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      tag {
+        id
+        label
+        posts {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdatePostTags = /* GraphQL */ `
+  subscription OnUpdatePostTags($filter: ModelSubscriptionPostTagsFilterInput) {
+    onUpdatePostTags(filter: $filter) {
+      id
+      postId
+      tagId
+      post {
+        id
+        body
+        photo
+        comments {
+          nextToken
+        }
+        userID
+        likes {
+          nextToken
+        }
+        tags {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      tag {
+        id
+        label
+        posts {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeletePostTags = /* GraphQL */ `
+  subscription OnDeletePostTags($filter: ModelSubscriptionPostTagsFilterInput) {
+    onDeletePostTags(filter: $filter) {
+      id
+      postId
+      tagId
+      post {
+        id
+        body
+        photo
+        comments {
+          nextToken
+        }
+        userID
+        likes {
+          nextToken
+        }
+        tags {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      tag {
+        id
+        label
+        posts {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
