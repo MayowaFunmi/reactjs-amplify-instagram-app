@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { API, graphqlOperation } from 'aws-amplify';
 import {
   followersByOwner,
+  listFollowers,
   postsByUserID,
   usersByUserId,
 } from '../graphql/queries';
@@ -11,7 +12,6 @@ import { createFollower, deleteFollower } from '../graphql/mutations';
 import { toast } from 'react-toastify';
 
 const UserProfileDetails = ({ sub }) => {
-  console.log('sub = ', sub);
   var picLink = 'https://cdn-icons-png.flaticon.com/128/3177/3177440.png';
   const { userid } = useParams();
   const [users, setUsers] = useState({});
@@ -19,6 +19,7 @@ const UserProfileDetails = ({ sub }) => {
   const [userPost, setUserPost] = useState([]);
   const [isFollower, setIsFollower] = useState(false);
   const [follower, setFollower] = useState({});
+  const [following, setFollowing] = useState(0);
   const notifyError = (msg) => toast.error(msg);
   const notifySuccess = (msg) => toast.success(msg);
 
@@ -46,7 +47,16 @@ const UserProfileDetails = ({ sub }) => {
             break;
           }
         }
-        //console.log('users = ', users);
+
+        const all_follows = await API.graphql(graphqlOperation(listFollowers))
+          const all = all_follows.data.listFollowers.items
+          var f = []
+          for (let i=0; i<all.length; i++) {
+            if (all[i].userID === userid) {
+              f.push(all[i])
+            }
+          }
+          setFollowing(f.length)
       } catch (error) {
         notifyError(error)
       }
@@ -109,7 +119,9 @@ const UserProfileDetails = ({ sub }) => {
               {users.firstName} {users.lastName}
             </h1>
             {/* if userid in userFol, show unfollow, else show follow */}
-            <p>{userFol.length} followers</p>
+           
+            <p><strong>{userFol.length} <br /> Followers</strong></p>
+            <p><strong>{following} <br /> Following</strong></p>
             {isFollower ? (
               <button className="followBtn" onClick={() => unFollowUser()}>
                 Unfollow
@@ -133,7 +145,8 @@ const UserProfileDetails = ({ sub }) => {
             </button> */}
           </div>
           <div className="profile-info" style={{ display: 'flex' }}>
-            <p>{userPost.length} posts</p>
+            <p><strong>{userPost.length}</strong> Posts</p>
+
             {/* <p>
               {users.followers ? users.followers.items.length : '0'} followers
             </p>

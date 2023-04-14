@@ -1,20 +1,13 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './UserProfile.css';
 import { API, graphqlOperation } from 'aws-amplify';
 import { followersByOwner, listFollowers, postsByUserID } from '../graphql/queries';
-import LoginContext from '../context/LoginContext';
 
 const UserProfile = ({ profile }) => {
   var picLink = 'https://cdn-icons-png.flaticon.com/128/3177/3177440.png';
   const [follow, setFollow] = useState(0);
   const [following, setFollowing] = useState(0);
   const [userPost, setUserPost] = useState([])
-
-  const auth = useContext(LoginContext);
-  
-  useEffect(() => {
-    auth.user();
-  }, [auth]);
 
   useEffect(() => {
     const getPosts = async() => {
@@ -55,17 +48,17 @@ const UserProfile = ({ profile }) => {
             {profile.lastName} {profile.firstName}
           </h1>
           <div className="profile-info" style={{ display: 'flex' }}>
-            <p><strong>Gender: {profile.gender}</strong></p>
+            {/* <p><strong>Gender: {profile.gender}</strong></p>
             <p><strong>Bio: {profile.bio}</strong></p>
             <p><strong>Location: {profile.location}</strong></p>
             <p>
              <strong> Date Of Birth:
               {new Date(profile.dateOfBirth).toLocaleDateString()}</strong>
             </p>
-            <p><strong>Privacy: {profile.privacy}</strong></p>
-            <p><strong>{userPost.length} posts</strong></p>
-            <p><strong>{follow} followers</strong></p>
-            <p><strong>{following} following</strong></p>
+            <p><strong>Privacy: {profile.privacy}</strong></p> */}
+            <p><strong>{userPost.length} <br /> Posts</strong></p>
+            <p><strong>{follow} <br /> Followers</strong></p>
+            <p><strong>{following} <br /> Following</strong></p>
           </div>
         </div>
       </div>

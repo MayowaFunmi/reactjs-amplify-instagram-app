@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './SignUp.css';
 import logo from '../images/logo.jpeg';
 import { toast } from 'react-toastify';
@@ -6,10 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import { API, Auth } from 'aws-amplify';
 import { createUser } from '../graphql/mutations';
 import UserProfile from './UserProfile';
-import LoginContext from '../context/LoginContext';
 import imageIcon from '../images/image_icon.png';
 
-const Profile = ({ userData }) => {
+const Profile = ({ userData, checkUser, authStatus }) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -17,21 +16,12 @@ const Profile = ({ userData }) => {
   const [image, setImage] = useState('');
   const [gender, setGender] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
-  //const [url, setUrl] = useState('');
   const [location, setLocation] = useState('');
   const [privacy, setPrivacy] = useState('');
 
   const notifyError = (msg) => toast.error(msg);
   const notifySuccess = (msg) => toast.success(msg);
   const navigate = useNavigate();
-
-  const auth = useContext(LoginContext);
-  //console.log('data = ', userData);
-  //console.log('status = ', auth.status);
-
-  useEffect(() => {
-    auth.user();
-  }, [auth]);
 
   // posting image to cloudinary
   const postDp = async () => {
@@ -55,7 +45,7 @@ const Profile = ({ userData }) => {
   
       const responseData = await response.json();
       //setUrl(responseData.url);
-      if (auth.status === false) {
+      if (!authStatus) {
         const authenticated_user = await Auth.currentAuthenticatedUser(); // username, other attributes - email, sub
         const userProfile = {
           input: {
@@ -108,7 +98,7 @@ const Profile = ({ userData }) => {
   return (
     <div className="signUp">
       <div className="form-container">
-        {!auth.status ? (
+        {!authStatus ? (
           <div className="form">
             <img className="signUpLogo" src={logo} alt="" />
             <p className="loginPara">Create Your Profile</p>

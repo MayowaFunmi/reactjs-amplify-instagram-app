@@ -1,23 +1,25 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { API, graphqlOperation } from 'aws-amplify';
-import LoginContext from '../context/LoginContext';
+//import LoginContext from '../context/LoginContext';
 import { useNavigate } from 'react-router-dom';
 import { listPosts } from '../graphql/queries';
 import './Home.css';
 import Post from './Post';
 
-const Home = ({ sub }) => {
+const Home = ({ sub, checkUser, authStatus }) => {
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
 
-  const auth = useContext(LoginContext);
+  //const auth = useContext(LoginContext);
   //console.log('status = ', auth.status);
 
   useEffect(() => {
-    auth.user();
-  }, [auth]);
+    if (!authStatus) {
+      checkUser();
+    }
+  }, [checkUser, authStatus]);
 
   useEffect(() => {
     if (!accessToken || !refreshToken) {

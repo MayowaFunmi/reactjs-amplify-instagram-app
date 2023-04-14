@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 //import user3 from '../images/user3.jpg';
 import './CreatePost.css';
 import imageIcon from '../images/image_icon.png';
@@ -6,9 +6,9 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { API, graphqlOperation } from 'aws-amplify';
 import { createPost } from '../graphql/mutations';
-import LoginContext from '../context/LoginContext';
+//import LoginContext from '../context/LoginContext';
 
-const CreatePost = ({ userData }) => {
+const CreatePost = ({ userData, checkUser, authStatus }) => {
   console.log('profile = ', userData);
   const [image, setImage] = useState('');
   const [body, setBody] = useState('');
@@ -19,7 +19,7 @@ const CreatePost = ({ userData }) => {
   //const [postTag, setPostTag] = useState({})
 
   const navigate = useNavigate();
-  const auth = useContext(LoginContext);
+  //const auth = useContext(LoginContext);
   //console.log('status = ', auth.status);
   const sendPost = async () => {
     // create tag
@@ -85,8 +85,10 @@ const CreatePost = ({ userData }) => {
   };
 
   useEffect(() => {
-    auth.user();
-  }, [auth]);
+    if (!authStatus) {
+      checkUser();
+    }
+  }, [checkUser, authStatus]);
 
   // posting image to cloudinary
   const postDetails = () => {
