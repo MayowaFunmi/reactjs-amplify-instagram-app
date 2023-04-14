@@ -23,7 +23,7 @@ const SignIn = () => {
   const handleSubmit = async (event) => {
     const { username, password } = formData;
     try {
-      const signInResponse = await Auth.signIn(username, password);
+      await Auth.signIn(username, password);
       //console.log('SignInResponse = ', signInResponse);
       const userSession = await Auth.currentSession();
       localStorage.setItem('accessToken', userSession.accessToken.jwtToken);

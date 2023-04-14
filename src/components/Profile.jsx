@@ -17,7 +17,7 @@ const Profile = ({ userData }) => {
   const [image, setImage] = useState('');
   const [gender, setGender] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
-  const [url, setUrl] = useState('');
+  //const [url, setUrl] = useState('');
   const [location, setLocation] = useState('');
   const [privacy, setPrivacy] = useState('');
 
@@ -27,11 +27,11 @@ const Profile = ({ userData }) => {
 
   const auth = useContext(LoginContext);
   //console.log('data = ', userData);
-  console.log('status = ', auth.status);
+  //console.log('status = ', auth.status);
 
   useEffect(() => {
     auth.user();
-  }, []);
+  }, [auth]);
 
   // posting image to cloudinary
   const postDp = async () => {
@@ -57,7 +57,6 @@ const Profile = ({ userData }) => {
       //setUrl(responseData.url);
       if (auth.status === false) {
         const authenticated_user = await Auth.currentAuthenticatedUser(); // username, other attributes - email, sub
-  
         const userProfile = {
           input: {
             userId: authenticated_user.attributes.sub,
@@ -73,18 +72,18 @@ const Profile = ({ userData }) => {
             privacy: privacy,
           },
         };
-        console.log('userProfile = ', userProfile);
+        //console.log('userProfile = ', userProfile);
         try {
-          const newUser = await API.graphql({
+          await API.graphql({
             query: createUser,
             variables: userProfile,
-          });
+          }); // newUser
           //console.log('auth user = ', newAuthUser);
-          console.log('new user = ', newUser);
+          //console.log('new user = ', newUser);
           notifySuccess('User Created Successfully!!');
           navigate('/');
         } catch (error) {
-          console.log('error = ', error);
+          //console.log('error = ', error);
           notifyError(error);
         }
       } else {
@@ -92,7 +91,8 @@ const Profile = ({ userData }) => {
         //navigate('/signin');
       }
     } catch (error) {
-      console.error('Error uploading image:', error);
+      notifyError('User not found on users list: ', error);
+      //console.error('Error uploading image:', error);
     }
   };
 

@@ -13,9 +13,7 @@ const Comments = ({ com, index }) => {
         if (usersArr[i].userId === id) {
           setUser(usersArr[i]);
           break;
-        } //else {
-        //   notifyError('user not found!');
-        // }
+        }
       }
     };
     userDetails(com.userID);

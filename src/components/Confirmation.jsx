@@ -12,17 +12,16 @@ const Confirmation = () => {
   const notifySuccess = (msg) => toast.success(msg);
   const notifyError = (msg) => toast.error(msg);
   console.log(location);
-  const { username, user } = location.state || {};
+  const { username } = location.state || {};
 
   async function confirmUser(username, confirmationCode) {
     try {
       await Auth.confirmSignUp(username, confirmationCode);
-      console.log('User confirmed = ', user);
+      //console.log('User confirmed = ', user);
       notifySuccess('Sign up completed succesfully!!!');
       navigate('/signin');
     } catch (error) {
       notifyError(error);
-      //console.log('Error confirming user: ', error);
     }
   }
 

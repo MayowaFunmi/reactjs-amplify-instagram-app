@@ -1,13 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './UserProfile.css';
 import { API, graphqlOperation } from 'aws-amplify';
 import { followersByOwner, listFollowers, postsByUserID } from '../graphql/queries';
+import LoginContext from '../context/LoginContext';
 
 const UserProfile = ({ profile }) => {
   var picLink = 'https://cdn-icons-png.flaticon.com/128/3177/3177440.png';
   const [follow, setFollow] = useState(0);
   const [following, setFollowing] = useState(0);
   const [userPost, setUserPost] = useState([])
+
+  const auth = useContext(LoginContext);
+  
+  useEffect(() => {
+    auth.user();
+  }, [auth]);
 
   useEffect(() => {
     const getPosts = async() => {
@@ -33,7 +40,7 @@ const UserProfile = ({ profile }) => {
     getfollowers()
     getfollowings()
     getPosts()
-  }, [])
+  }, [profile])
 
   return (
     <div className="profile">
@@ -70,9 +77,6 @@ const UserProfile = ({ profile }) => {
             <img
               key={post.id}
               src={post.photo}
-              // onClick={() => {
-              //     toggleDetails(pics)
-              // }}
               className="item"
               alt=""
             ></img>

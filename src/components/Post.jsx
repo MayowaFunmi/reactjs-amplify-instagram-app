@@ -110,10 +110,6 @@ const Post = ({ post, sub }) => {
       setShow(true);
       setItem(currentPost);
     }
-    // console.log('show1 = ', show);
-    // console.log('currentPost = ', currentPost);
-    // setShow(true);
-    // setItem(currentPost);
   };
 
   // save new comments
@@ -126,7 +122,7 @@ const Post = ({ post, sub }) => {
       notifySuccess('Comment posted successfully');
       navigate('/');
     } catch (error) {
-      console.log('error = ', error);
+      //console.log('error = ', error);
       notifyError(error);
     }
   };
@@ -139,21 +135,18 @@ const Post = ({ post, sub }) => {
       const likePost = await API.graphql(
         graphqlOperation(createLike, postParams)
       );
-      console.log('likePost = ', likePost);
+      //console.log('likePost = ', likePost);
       setLike(likePost.data.createLike);
-      console.log('like = ', like);
+      //console.log('like = ', like);
       notifySuccess('You like this post!');
     } catch (error) {
-      console.log('error = ', error);
+      //console.log('error = ', error);
       notifyError(error);
     }
   };
 
   const unlikePost = async (userId, postId) => {
-    // const postParams = {
-    //   input: { userID: sub, postID: postId },
-    // };
-    console.log('like = ', like);
+    //console.log('like = ', like);
     const postParams = {
       input: {
         id: like.id,
@@ -164,7 +157,7 @@ const Post = ({ post, sub }) => {
       setUserLike(false);
       notifySuccess('You hate this post!');
     } catch (error) {
-      console.log('error = ', error);
+      //console.log('error = ', error);
       notifyError(error);
     }
   };

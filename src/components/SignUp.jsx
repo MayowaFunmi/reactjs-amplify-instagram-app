@@ -13,7 +13,7 @@ const SignUp = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [confirmationCode, setConfirmationCode] = useState(0);
   const [confirmForm, setConfirmForm] = useState(false);
-  const [isAvailable, setIsAvailable] = useState(false);
+  //const [isAvailable, setIsAvailable] = useState(false);
 
   const notifyError = (msg) => toast.error(msg);
   const notifySuccess = (msg) => toast.success(msg);
@@ -23,29 +23,30 @@ const SignUp = () => {
   async function confirmUser(username, confirmationCode) {
     try {
       await Auth.confirmSignUp(username, confirmationCode);
-      console.log('signup confirmed');
+      //console.log('signup confirmed');
       notifySuccess('Sign up completed succesfully');
       // check if userID exists
       navigate('/signin');
     } catch (error) {
       notifyError(error);
-      console.log('error = ', error);
+      notifyError(error)
+      //console.log('error = ', error);
     }
   }
 
-  const checkUsername = async () => {
-    try {
-      await Auth.adminGetUser({
-        Username: username,
-        UserPoolId: 'us-east-1_9Sr7uWyYE',
-      });
-      setIsAvailable(true);
-    } catch (error) {
-      setIsAvailable(false);
-      notifyError(`${username} is already taken`);
-    }
-    console.log(isAvailable);
-  };
+  // const checkUsername = async () => {
+  //   try {
+  //     await Auth.adminGetUser({
+  //       Username: username,
+  //       UserPoolId: 'us-east-1_9Sr7uWyYE',
+  //     });
+  //     setIsAvailable(true);
+  //   } catch (error) {
+  //     setIsAvailable(false);
+  //     notifyError(`${username} is already taken`);
+  //   }
+  //   console.log(isAvailable);
+  // };
 
   async function handleSignUp(e) {
     //e.preventDefault();
@@ -66,7 +67,6 @@ const SignUp = () => {
           email,
         },
       });
-      console.log('user signup = ', user);
 
       if (user) {
         setConfirmForm(true);

@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import './UserProfile.css';
-import { useParams, useNavigate } from 'react-router-dom';
-import { API, Auth, graphqlOperation } from 'aws-amplify';
+import { useParams } from 'react-router-dom';
+import { API, graphqlOperation } from 'aws-amplify';
 import {
   followersByOwner,
-  getUser,
   postsByUserID,
   usersByUserId,
 } from '../graphql/queries';
@@ -22,7 +21,6 @@ const UserProfileDetails = ({ sub }) => {
   const [follower, setFollower] = useState({});
   const notifyError = (msg) => toast.error(msg);
   const notifySuccess = (msg) => toast.success(msg);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const getUserDetail = async () => {
@@ -39,21 +37,18 @@ const UserProfileDetails = ({ sub }) => {
         setUserFol(userfol.data.followersByOwner.items);
         setUserPost(post.data.postsByUserID.items);
         setUsers(user.data.usersByUserId.items[0]);
-        console.log('post = ', userPost);
-        console.log('user = ', users);
-        console.log('userFol = ', userfol);
+       
         // loop through the userFol to check if current user already following the user being checked
         for (let i = 0; i < userFol.length; i++) {
           if (userFol[i].userID === sub) {
             setFollower(userFol[i]);
             setIsFollower(true);
-            console.log('userFol[i] = ', userFol[i]);
             break;
           }
         }
         //console.log('users = ', users);
       } catch (error) {
-        console.log('user error = ', error);
+        notifyError(error)
       }
     };
     getUserDetail();
@@ -65,16 +60,14 @@ const UserProfileDetails = ({ sub }) => {
       input: { owner: userid, userID: sub },
     };
     try {
-      const follow = await API.graphql(
+      await API.graphql(
         graphqlOperation(createFollower, followerParams)
       );
       //setFollower(follow.data.createFollower);
       setIsFollower(true);
       notifySuccess('You are following this user!');
-      console.log('follow = ', follow);
       //console.log('follower = ', follower);
     } catch (error) {
-      console.log('error = ', error);
       notifyError(error);
     }
   };

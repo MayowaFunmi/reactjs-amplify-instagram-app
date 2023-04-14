@@ -3,7 +3,6 @@ import { API, graphqlOperation } from 'aws-amplify';
 import LoginContext from '../context/LoginContext';
 import { useNavigate } from 'react-router-dom';
 import { listPosts } from '../graphql/queries';
-import { listComments } from '../graphql/queries';
 import './Home.css';
 import Post from './Post';
 
@@ -18,7 +17,7 @@ const Home = ({ sub }) => {
 
   useEffect(() => {
     auth.user();
-  }, []);
+  }, [auth]);
 
   useEffect(() => {
     if (!accessToken || !refreshToken) {
@@ -26,8 +25,6 @@ const Home = ({ sub }) => {
     }
     const allPosts = async () => {
       const getPosts = await API.graphql(graphqlOperation(listPosts));
-      //const getComments = await API.graphql(graphqlOperation(listComments));
-      //console.log('all comments: ', getComments);
       const data = getPosts.data.listPosts.items;
       const sortedPosts = data.sort(
         (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
@@ -37,7 +34,7 @@ const Home = ({ sub }) => {
     allPosts();
   }, [accessToken, navigate, refreshToken]);
 
-  console.log('posts = ', posts);
+  //console.log('posts = ', posts);
   return (
     <div className="home">
       {/* card */}

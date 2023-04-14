@@ -5,7 +5,7 @@ import imageIcon from '../images/image_icon.png';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { API, graphqlOperation } from 'aws-amplify';
-import { createPost, createPostTags, createTag } from '../graphql/mutations';
+import { createPost } from '../graphql/mutations';
 import LoginContext from '../context/LoginContext';
 
 const CreatePost = ({ userData }) => {
@@ -13,10 +13,10 @@ const CreatePost = ({ userData }) => {
   const [image, setImage] = useState('');
   const [body, setBody] = useState('');
   const [url, setUrl] = useState('');
-  const [tagLabels, setTagLabels] = useState('')
-  const [tagRes, setTagRes] = useState([])
-  const [postNew, setPostNew] = useState({})
-  const [postTag, setPostTag] = useState({})
+  //const [tagLabels, setTagLabels] = useState('')
+  //const [tagRes, setTagRes] = useState([])
+  //const [postNew, setPostNew] = useState({})
+  //const [postTag, setPostTag] = useState({})
 
   const navigate = useNavigate();
   const auth = useContext(LoginContext);
@@ -46,47 +46,47 @@ const CreatePost = ({ userData }) => {
       };
       //console.log('new post data =', newPost);
       try {
-        const post = await API.graphql(
+        await API.graphql(
           graphqlOperation(createPost, { input: newPost })
-        );
+        ); // = post
         //console.log('new post: ', post);
-        setPostNew(post.data.createPost)
+        //setPostNew(post.data.createPost)
         notifySuccess('Post Created Successfully');
         navigate('/');
       } catch (error) {
-        console.log('error = ', error);
+        //console.log('error = ', error);
         notifyError(error);
       }
     }
 
-    if (tagLabels) {
-      const tagLabelsArray = tagLabels.split(',').map((tagLabel) => tagLabel.trim());
+    // if (tagLabels) {
+    //   const tagLabelsArray = tagLabels.split(',').map((tagLabel) => tagLabel.trim());
 
-      // create new tags
-      const tags = await Promise.all(tagLabelsArray.map(async (tagLabel) => {
-        const createTagInput = {
-          label: tagLabel
-        }
-        const newTag = await API.graphql(graphqlOperation(createTag, { input: createTagInput }))
-        return newTag.data.createTag
-      }));
+    //   // create new tags
+    //   const tags = await Promise.all(tagLabelsArray.map(async (tagLabel) => {
+    //     const createTagInput = {
+    //       label: tagLabel
+    //     }
+    //     const newTag = await API.graphql(graphqlOperation(createTag, { input: createTagInput }))
+    //     return newTag.data.createTag
+    //   }));
 
-    // Finally, link the tags to the post
-      const postTags = await Promise.all(tags.map(async (tag) => {
-        const createPostTagInput = {
-          postId: postNew.id,
-          tagId: tag.id
-        }
-        const newPostTag = await API.graphql(graphqlOperation(createPostTags, { input: createPostTagInput}))
-        setPostTag(newPostTag.data.createPostTags)
-      }))
-      console.log('New Post with tags:', { ...postNew, tags: postTags });
-    }
+    // // Finally, link the tags to the post
+    //   const postTags = await Promise.all(tags.map(async (tag) => {
+    //     const createPostTagInput = {
+    //       postId: postNew.id,
+    //       tagId: tag.id
+    //     }
+    //     const newPostTag = await API.graphql(graphqlOperation(createPostTags, { input: createPostTagInput}))
+    //     setPostTag(newPostTag.data.createPostTags)
+    //   }))
+    //   console.log('New Post with tags:', { ...postNew, tags: postTags });
+    // }
   };
 
   useEffect(() => {
     auth.user();
-  }, []);
+  }, [auth]);
 
   // posting image to cloudinary
   const postDetails = () => {
@@ -168,7 +168,7 @@ const CreatePost = ({ userData }) => {
             setBody(e.target.value);
           }}
         ></textarea>
-        <input type="text" value={tagLabels} onChange={(e) => setTagLabels(e.target.value)} placeholder='Add Tag(s), separate each tag using comma ","' />
+        {/* <input type="text" value={tagLabels} onChange={(e) => setTagLabels(e.target.value)} placeholder='Add Tag(s), separate each tag using comma ","' /> */}
       </div>
     </div>
   );

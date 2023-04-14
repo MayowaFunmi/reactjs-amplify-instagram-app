@@ -20,7 +20,7 @@ const Navbar = () => {
       navigate('/signin');
     } catch (error) {
       notifyError('something went wrong');
-      console.log('error: ', error);
+      //console.log('error: ', error);
     }
   };
   const loginStatus = () => {
@@ -38,6 +38,9 @@ const Navbar = () => {
           </Link>
           <Link to="/create_post">
             <li>Create Post</li>
+          </Link>
+          <Link to="/search_post">
+            <li>Tags</li>
           </Link>
           <Link to="/change_password">
             <li>Change Password</li>
